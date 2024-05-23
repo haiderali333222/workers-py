@@ -1,6 +1,8 @@
 from fastapi import UploadFile
 from typing import List
 from utils.file_upload_utils import upload_files
+from utils.slack import slack_notify_error
+
 
 async def upload_file_queue(files_list: List[UploadFile]) -> dict:
     try:
@@ -9,4 +11,4 @@ async def upload_file_queue(files_list: List[UploadFile]) -> dict:
         print(files_number)
         return {"Number of files will be processed": files_number}
     except Exception as e:
-        print(e)
+        slack_notify_error(e,"Internal Server Error", subtitle="An error occurred in upload_file_queue")
