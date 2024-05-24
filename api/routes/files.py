@@ -1,6 +1,6 @@
 from fastapi import APIRouter, File, UploadFile
 from typing import List
-from api.controllers.files import upload_file_queue
+from api.controllers.files.index import upload_file_queue
 
 files_router = APIRouter()
 

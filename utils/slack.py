@@ -24,4 +24,19 @@ def slack_notify_error(title, subtitle, error):
         ]
     }
     slack(slackMessageBody)
-    
+
+def send_slack_message(message):
+    message = f"{ENVIRONMENT} {str(message)}"
+    payload = '{"text":"%s"}' % message
+    return slack(payload)
+
+
+def send_detailed_slack_message(title, message):
+    full_message = f"*{title}*\n{message}"  # Bold title with newline
+    payload = '{"text":"%s"}' % full_message
+
+    return slack(payload)
+
+def error_slack_message(e):
+    message = f"Error: {str(e)}" + "\n" + traceback.format_exc()
+    send_slack_message(message)
