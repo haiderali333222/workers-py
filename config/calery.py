@@ -11,5 +11,5 @@ broker_connection_retry_on_startup = True
 
 imports = ['workers.url_scraper']
 task_routes = {
-    'fetch_urls_task': {'queue': 'celery_queue_for_url_fetch'},
+    'urls_scraper_task': {'queue': 'celery_queue_for_url_fetch'},
 }

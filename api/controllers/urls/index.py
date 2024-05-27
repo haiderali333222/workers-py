@@ -1,13 +1,13 @@
 import json
 
-from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from typing import List, Optional
 from celery.result import AsyncResult
+from fastapi.responses import JSONResponse
 
 from utils.slack import send_slack_message
-from workers.url_scraper import fetch_urls_task
-from mapping.mapping_for_urls import COMPETITOR_MAPPING
+from workers.url_scraper import urls_scraper_task
+from jobs.mapping.mapping_for_urls import COMPETITOR_MAPPING
 
 
 class FetchUrlsRequest(BaseModel):
@@ -31,7 +31,7 @@ async def enqueue_url_fetch_request(request: FetchUrlsRequest):
 
     task_ids = {}
     for competitor in competitors:
-        competitor_task = fetch_urls_task.delay(competitor)
+        competitor_task = urls_scraper_task.delay(competitor)
         task_ids[competitor] = competitor_task.id
 
     message = ""
