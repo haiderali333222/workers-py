@@ -3,13 +3,13 @@ from dotenv import load_dotenv
 load_dotenv()
 # Broker URL
 CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL")
-# Result backend
-CELERY_RESULT_BACKEND = os.getenv("CELERY_RESULT_BACKEND")
-# Accepted content types
-# CELERY_ACCEPT_CONTENT = ['json']
-# # Task serializer
-# CELERY_TASK_SERIALIZER = 'json'
-# # Result serializer
-# CELERY_RESULT_SERIALIZER = 'json'
-# # Timezone
-# CELERY_TIMEZONE = 'UTC'
+# Configure Celery
+broker_url = CELERY_BROKER_URL
+broker_transport_options = {"visibility_timeout": 3600}  # 1 hour.
+result_backend_transport_options = {"retry_policy": {"timeout": 5.0}}
+broker_connection_retry_on_startup = True
+
+imports = ['workers.file_upload']
+task_routes = {
+        'file_handler_task': {'queue': 'celery_queue_for_file_upload'}
+    }
