@@ -1,20 +1,17 @@
 import traceback
+
 from fastapi import HTTPException
-from api.controllers.urls.scrapping_urls import multithreaded_url_scraper
+
 from utils.slack import send_slack_message
 from services.celery.celery_app import celery_app
+from mapping.mapping_for_urls import COMPETITOR_MAPPING
 
 @celery_app.task(name="fetch_urls_task")
-def fetch_urls_task(data: dict):
+def fetch_urls_task(competitor: str):
     try:
-        if 'competitors' not in data:
-            raise HTTPException(status_code=400, detail="Incorrect parameters!")
-
-        competitors = data.get('competitors')
-        multithreaded_url_scraper(competitors)
-
-        print('urls fetched')
-        send_slack_message("{'message': 'Getting Urls...'}")
+        send_slack_message(f'Starting URL Fetch task for {competitor}...')
+        COMPETITOR_MAPPING[competitor]()
+        send_slack_message(f'URL Fetch task for {competitor} has been completed')        
     except Exception as e:
         message = f"Error: {str(e)}" + "\n" + traceback.format_exc()
         send_slack_message(message)

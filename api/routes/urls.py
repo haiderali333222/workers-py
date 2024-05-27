@@ -1,12 +1,11 @@
-from api.controllers.urls.index import enqueue_url_fetch_request, get_task_status
 from pydantic import BaseModel
 from typing import List, Optional
 from fastapi import FastAPI, APIRouter
 
+from api.controllers.urls.index import enqueue_url_fetch_request, get_task_status
 
 app = FastAPI()
 urls_router = APIRouter()
-
 
 class FetchUrlsRequest(BaseModel):
     competitors: Optional[List[str]] = None
@@ -14,7 +13,6 @@ class FetchUrlsRequest(BaseModel):
 @urls_router.post("/get-urls")
 async def fetch_urls(request: FetchUrlsRequest):
     return await enqueue_url_fetch_request(request)
-    
     
 @urls_router.get("/task-status/{task_id}")
 async def fetch_status(task_id: str):

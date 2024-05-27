@@ -1,9 +1,12 @@
 import uvicorn
-from api.routes.index import api_router
+import subprocess
+
 from fastapi import FastAPI, APIRouter, Request
 from fastapi.responses import JSONResponse
+
+
+from api.routes.index import api_router
 from utils.slack import slack_notify_error
-import subprocess
 
 
 app = FastAPI()
@@ -22,16 +25,6 @@ if __name__ == '__main__':
     celery_beat_cmd = ["celery", "--app", "services.celery.celery_app", "beat"]
     celery_beat_process = subprocess.Popen(celery_beat_cmd)
 
-    # Start the Celery worker in a separate process
-    celery_worker_cmd= [
-        "celery", "--app", 
-        "services.celery.celery_app", 
-        "worker","--concurrency=1",
-        "-Q" ,"celery_queue_for_file_upload",
-        "--pool=solo"
-    ]
-    celery_worker_process_upload = subprocess.Popen(celery_worker_cmd)
-     # Start the Celery worker for URL fetching
     celery_worker_cmd_fetch = [
         "celery", "--app", "services.celery.celery_app",
         "worker", "--concurrency=1",
@@ -41,5 +34,4 @@ if __name__ == '__main__':
     celery_worker_process_fetch = subprocess.Popen(celery_worker_cmd_fetch)
     uvicorn.run(app, host="0.0.0.0", port=8888)
     celery_beat_process.terminate()
-    celery_worker_process_upload.terminate()
     celery_worker_process_fetch.terminate()

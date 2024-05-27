@@ -27,9 +27,6 @@ def is_manufacturer_match(manufacturers_dict, product_manufacture):
 
 def get_and_store_online_components_urls():
     try:
-        message = f"start getting url for {COMPETITOR}"
-        send_slack_message(message)
-
         manufacturers_dict = preprocess_manufacturers()
 
         count = 0
@@ -61,9 +58,6 @@ def get_and_store_online_components_urls():
         if outputs and len(outputs):
             url_insert_bulk(outputs)
             outputs = []
-
-        message = f"end getting url for {COMPETITOR}"
-        send_slack_message(message)
         
     except Exception as e:
         error_slack_message(e)
