@@ -1,5 +1,6 @@
 import re
 from utils.competitor_urls_helper import error_slack_message, check_manufacturer_match, url_insert_bulk,preprocess_manufacturers, get_sitemap_urls
+
 from utils.slack import send_slack_message
 
 COMPETITOR = 'onlinecomponents'
