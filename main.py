@@ -19,8 +19,6 @@ async def global_exception_handler(request: Request, exc: Exception):
     return JSONResponse(status_code=500, content={"message": "Internal Server Error"})
 
 if __name__ == '__main__':
-    uvicorn.run(app, host="0.0.0.0", port=8000)
-    
     celery_beat_cmd = ["celery", "--app", "services.celery.celery_app", "beat"]
     celery_beat_process = subprocess.Popen(celery_beat_cmd)
 
