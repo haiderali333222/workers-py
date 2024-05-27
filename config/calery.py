@@ -9,7 +9,8 @@ broker_transport_options = {"visibility_timeout": 3600}  # 1 hour.
 result_backend_transport_options = {"retry_policy": {"timeout": 5.0}}
 broker_connection_retry_on_startup = True
 
-imports = ['workers.file_upload']
+imports = ['workers.file_upload', 'workers.url_scraper']
 task_routes = {
-        'file_handler_task': {'queue': 'celery_queue_for_file_upload'}
-    }
+    'file_handler_task': {'queue': 'celery_queue_for_file_upload'},
+    'fetch_urls_task': {'queue': 'celery_queue_for_url_fetch'},
+}
