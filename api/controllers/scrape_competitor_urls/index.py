@@ -6,14 +6,13 @@ from celery.result import AsyncResult
 from fastapi.responses import JSONResponse
 
 from utils.slack import send_slack_message
-from workers.url_scraper import urls_scraper_task
+from workers.scrape_competitor_urls import scrape_competitor_urls_task
 from jobs.mapping.mapping_for_urls import COMPETITOR_MAPPING
-
 
 class FetchUrlsRequest(BaseModel):
     competitors: Optional[List[str]] = None
 
-async def enqueue_url_fetch_request(request: FetchUrlsRequest):
+async def enqueue_competitors_url_fetch_request(request: FetchUrlsRequest):
     data_json = request.model_dump_json()
     data = json.loads(data_json)
 
@@ -31,7 +30,7 @@ async def enqueue_url_fetch_request(request: FetchUrlsRequest):
 
     task_ids = {}
     for competitor in competitors:
-        competitor_task = urls_scraper_task.delay(competitor)
+        competitor_task = scrape_competitor_urls_task.delay(competitor)
         task_ids[competitor] = competitor_task.id
 
     message = ""

@@ -9,7 +9,7 @@ broker_transport_options = {"visibility_timeout": 3600}  # 1 hour.
 result_backend_transport_options = {"retry_policy": {"timeout": 5.0}}
 broker_connection_retry_on_startup = True
 
-imports = ['workers.url_scraper']
+imports = ['workers.scrape_competitor_urls']
 task_routes = {
-    'urls_scraper_task': {'queue': 'celery_queue_for_url_fetch'},
+    'scrape_competitor_urls_task': {'queue': 'celery_queue_for_scrape_competitor_urls'},
 }

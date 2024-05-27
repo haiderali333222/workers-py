@@ -1,6 +1,5 @@
 import requests
 from config.index import SLACK_HEADER, IS_LOCAL
-import traceback
 import requests
 import json
 
@@ -9,12 +8,11 @@ def slack(slackMessageBody):
         print("Slack Message: ",json.dumps(slackMessageBody))
         return
 
-    slackUrl = SLACK_HEADER
     headers = {
         'content-type': 'application/json',
     }
-    body = slackMessageBody
+
     try:
-        requests.post(slackUrl, headers=headers, data=json.dumps(body))
+        requests.post(SLACK_HEADER, headers=headers, data=json.dumps(slackMessageBody))
     except Exception as error:
         print(error)
