@@ -1,12 +1,12 @@
 import requests
-from config.index import SLACK_HEADER, ENVIRONMENT, IS_DEVELOPMENT
+from config.index import SLACK_HEADER, IS_LOCAL
 import traceback
 import requests
 import json
 
 def slack(slackMessageBody):
-    if IS_DEVELOPMENT:
-        print(json.dumps(slackMessageBody))
+    if IS_LOCAL:
+        print("Slack Message: ",json.dumps(slackMessageBody))
         return
 
     slackUrl = SLACK_HEADER
