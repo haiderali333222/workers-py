@@ -56,12 +56,12 @@ def get_proxies():
         return proxies, headers
     except Exception as e:
         error_slack_message(e)
+        return {}, {}
 
-def request_with_retry(method, url, competitor, proxies={}, headers={}, **kwargs):
+def request_with_retry(method, url, proxies={}, headers={}, retries=3, **kwargs):
     try:
         okay = False
         retry_after = 1
-        retries = 3
         response = None
         while not okay and retries:
             if method == "get":
@@ -75,12 +75,6 @@ def request_with_retry(method, url, competitor, proxies={}, headers={}, **kwargs
                 sleep(retry_after)
             retries -= 1
             retry_after *= 2
-        if response.status_code not in [200, 404]:
-            filter = {
-                "url": url,
-                "competitor": competitor
-            }
-            db.faulty_urls.update_one(filter, {"$set": filter}, True)
         return response
     except Exception as e:
        error_slack_message(e)
@@ -112,12 +106,12 @@ def download_gz_file(competitor_name, url, count):
         # response = requests.get(scrape_api)
         proxies, headers = get_proxies()
         response = request_with_retry(
-            "get", scrape_api, competitor_name, proxies=proxies, headers=headers)
+            "get", scrape_api, proxies=proxies, headers=headers)
         if competitor_name == 'us.rs-online':
             file_name = f"sitemap-rs{str(count)}.xml.gz"
         else:
             file_name = f"sitemap-{competitor_name}{str(count)}.xml.gz"
-        file_path = os.path.join("data", "temp", file_name)
+        file_path = os.path.join("trash", file_name)
         with open(file_path, "wb") as file:
             file.write(response.content)
         return file_path
@@ -133,9 +127,10 @@ def read_gz_file(url):
 
 def url_insert(item):
     try:
-        # send_slack_message("inside url_insert mongo")
         if type(item) is not dict:
             return
+
+        send_slack_message(f'Inserting 1 item into Mongo DB: {item["competitor"]}')
         filter = {
             "competitor": item["competitor"],
             "url": item["url"],
@@ -188,8 +183,8 @@ def get_sitemap_urls(url_to_parse, competitor):
         sitemap_index = BeautifulSoup(page.content, 'xml')  # Use XML parser explicitly
         return [element.text for element in sitemap_index.findAll('loc')]
     except Exception as e:
-        print('error in get_sitemap_urls')
         error_slack_message(e)
+        return []
 
 def check_manufacturer_match(manufacturers_dict, product_title):
     clean_product_title = clean_string(product_title, remove_company_status=True)
@@ -215,20 +210,61 @@ def get_date_time():
 def listToString(url):
     return "".join(url)
 
-def url_insert_bulk(data):
-    try:
-        send_slack_message("inside url_insert_bulk mongo")
-        if type(data) is not list or len(data) == 0:
-            return
-        rows = []
-        for item in data:
-            filter = {
-                "competitor": item["competitor"],
-                "url": item["url"],
-                "scraper_type": item["scraper_type"]
-            }
-            rows.append(UpdateOne(filter, {"$setOnInsert": item}, True))
-        db.competitor_url.bulk_write(rows)
+def get_page_with_scraperapi_from_url(url, competitor, is_premium=False, is_ultra_premium=False, is_render=False):
+    try: 
+        scrape_api = f'https://api.scraperapi.com/?api_key={API_KEY_SCRAPY}&url={url}'
+        
+        if is_ultra_premium:
+            scrape_api = f'{scrape_api}&ultra_premium=true'
+        elif is_premium:
+            scrape_api = f'{scrape_api}&premium=true'
+        
+        if is_render:
+            scrape_api = f'{scrape_api}&render=true'
+
+        proxies, headers  = get_proxies()
+        page = None
+        try:
+            page = request_with_retry("get", scrape_api, proxies=proxies, headers=headers)
+        except Exception as e:
+            message = f"Error: {competitor} {e}"
+            send_slack_message(message)
+            return 
+
+        if page.status_code != 200:
+            message = f"Error: {competitor} {page.text}"
+            send_slack_message(message)
+            return 
+
+        return BeautifulSoup(page.content, 'html.parser')
     except Exception as e:
-        message = f"Error: {str(e)}" + "\n" + traceback.format_exc()
-        send_slack_message(message)
+        error_slack_message(e)
+    
+def get_page_from_url(url, competitor, stream=False, verify=True):
+    try:
+        proxies, headers = get_proxies()
+        page = None
+        try:
+            page = requests.get(url, proxies=proxies,headers=headers ,stream=stream, verify=verify)
+        except Exception as e:
+            message = f"Error: {competitor}{e}"
+            send_slack_message(message)
+
+        if page.status_code != 200:
+            message = f"Error: {competitor}{page.text}"
+            send_slack_message(message)
+
+        return BeautifulSoup(page.text, "html.parser")
+    except Exception as e:
+        error_slack_message(e)
+
+
+def remove_outdated_urls(competitor):
+        db.competitor_url.delete_many({'competitor': competitor})
+        db_comp_product = db.competitor_url.find({'competitor': competitor})
+            
+        send_slack_message(f"Records successfully deleted and Updating outdated records status for {competitor}")
+        db.competitorproducts.update_many(
+            {"competitor": competitor},
+            {"$set": {"isOutdated": True}}
+        )
