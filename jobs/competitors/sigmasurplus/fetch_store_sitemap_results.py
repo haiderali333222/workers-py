@@ -5,8 +5,9 @@ from bs4 import BeautifulSoup
 from utils.helpers.index import url_insert_bulk, remove_outdated_urls
 from utils.slack import send_slack_message, error_slack_message
 
-COMPETITOR = 'sigmasurplus'
+COMPETITOR = "sigmasurplus"
 MAX_COUNT = 5000
+
 
 def get_and_store_sigmasurplus_urls():
     try:
@@ -19,19 +20,19 @@ def get_and_store_sigmasurplus_urls():
             message = f"Error: sigmasurplus {page.text}"
             send_slack_message(message)
 
-        sitemap_index = BeautifulSoup(page.content, 'html.parser')
-        urls = [element.text for element in sitemap_index.findAll('loc')]
+        sitemap_index = BeautifulSoup(page.content, "html.parser")
+        urls = [element.text for element in sitemap_index.findAll("loc")]
         for data in urls:
-            if 'product' in data:
+            if "product" in data:
                 print(data)
                 sitemap = requests.get(data)
-                result_index = BeautifulSoup(sitemap.content, 'html.parser')
+                result_index = BeautifulSoup(sitemap.content, "html.parser")
                 try:
-                    for element in result_index.findAll('loc'):
+                    for element in result_index.findAll("loc"):
                         result = {
                             "competitor": "sigmasurplus",
                             "url": element.text,
-                            "scraper_type": "sitemap"
+                            "scraper_type": "sitemap",
                         }
                         outputs.append(result)
                         if len(outputs) == 5000:

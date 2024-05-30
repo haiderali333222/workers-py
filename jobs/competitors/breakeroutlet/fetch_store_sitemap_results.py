@@ -6,6 +6,7 @@ from .helper import creating_url
 
 count = 0
 
+
 def get_and_store_breakeroutlet_urls():
     try:
         increment_value = 5000
@@ -19,5 +20,3 @@ def get_and_store_breakeroutlet_urls():
                 executor.submit(creating_url, data)
     except Exception as e:
         error_slack_message(e)
-
-

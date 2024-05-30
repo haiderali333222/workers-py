@@ -5,7 +5,6 @@ from utils.helpers.index import error_slack_message
 from utils.es.executor import total_count, extracted_name
 
 
-
 def get_and_store_coasttocoastbreaker_urls():
     try:
         increment_value = 5000

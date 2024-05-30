@@ -1,8 +1,15 @@
 from .helper import is_manufacturer_match, is_valid_url_and_manufacturer
-from utils.helpers.index import error_slack_message, check_manufacturer_match, url_insert_bulk,preprocess_manufacturers, get_sitemap_urls
+from utils.helpers.index import (
+    error_slack_message,
+    check_manufacturer_match,
+    url_insert_bulk,
+    preprocess_manufacturers,
+    get_sitemap_urls,
+)
 
-COMPETITOR = 'onlinecomponents'
-STARTING_URL = 'https://www.onlinecomponents.com/sitemaps.xml'
+COMPETITOR = "onlinecomponents"
+STARTING_URL = "https://www.onlinecomponents.com/sitemaps.xml"
+
 
 def get_and_store_online_components_urls():
     try:
@@ -12,24 +19,28 @@ def get_and_store_online_components_urls():
         limit = 5000
 
         sitemap_urls = get_sitemap_urls(STARTING_URL, COMPETITOR)
-        
-        print(f'Found {len(sitemap_urls)} sitemap urls')
-        
+
+        print(f"Found {len(sitemap_urls)} sitemap urls")
+
         for sitemap_url in sitemap_urls:
             website_urls = get_sitemap_urls(sitemap_url, COMPETITOR)
 
             for url in website_urls:
                 is_valid, manufacturer = is_valid_url_and_manufacturer(url)
 
-                if is_valid and manufacturer and is_manufacturer_match(manufacturers_dict, manufacturer):
+                if (
+                    is_valid
+                    and manufacturer
+                    and is_manufacturer_match(manufacturers_dict, manufacturer)
+                ):
                     count += 1
                     result = {
                         "competitor": COMPETITOR,
                         "url": url,
                         "scraper_type": "sitemap",
-                        'from_manufacturer': True
+                        "from_manufacturer": True,
                     }
-                    print(f'inserting, {count}')
+                    print(f"inserting, {count}")
                     outputs.append(result)
 
                 if count >= limit:
@@ -39,6 +50,6 @@ def get_and_store_online_components_urls():
         if outputs and len(outputs):
             url_insert_bulk(outputs)
             outputs = []
-        
+
     except Exception as e:
         error_slack_message(e)

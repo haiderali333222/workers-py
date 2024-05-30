@@ -2,7 +2,7 @@ from utils.helpers.index import url_insert_bulk, error_slack_message, get_sitema
 
 
 COMPETITOR = "controlparts"
-URL = 'https://controlparts.com/sitemap.xml'
+URL = "https://controlparts.com/sitemap.xml"
 MAX_COUNT = 5000
 
 
@@ -11,13 +11,13 @@ def get_and_store_controlparts_urls():
         outputs = []
         sitemap_urls = get_sitemap_urls(URL, COMPETITOR)
         for sitemap_url in sitemap_urls:
-            if 'sitemap_products' in sitemap_url:
+            if "sitemap_products" in sitemap_url:
                 website_urls = get_sitemap_urls(sitemap_url, COMPETITOR)
                 for website_url in website_urls:
                     result = {
                         "competitor": COMPETITOR,
                         "url": website_url,
-                        "scraper_type": "sitemap"
+                        "scraper_type": "sitemap",
                     }
                     outputs.append(result)
                     if len(outputs) == MAX_COUNT:

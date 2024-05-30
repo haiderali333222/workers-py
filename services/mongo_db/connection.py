@@ -7,6 +7,8 @@ from utils.slack import send_slack_message
 # send_slack_message(str(DB_URL))
 
 mongo_client = None
+
+
 def mongoConnection():
     global mongo_client  # Access the global client variable
     if mongo_client is not None:

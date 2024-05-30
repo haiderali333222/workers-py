@@ -7,11 +7,10 @@ MAX_COUNT = 5000
 
 
 def get_categories_id(manf):
-    manf= manf.strip()
+    manf = manf.strip()
     url = "https://www.automationdirect.com/ajax?"
 
     proxies, headers = get_proxies()
-
 
     data = {
         "spellcheck": "null",
@@ -20,10 +19,10 @@ def get_categories_id(manf):
         "searchquery": manf,
         "rawSearchquery": manf,
         "pageRefresh": "true",
-        "solrQueryString": {f'q={manf}&rows=50&facet=true'},
+        "solrQueryString": {f"q={manf}&rows=50&facet=true"},
         "productType": "",
         "controllingWidgetName": "Item_Type_ms",
-        "categoryId": "0"
+        "categoryId": "0",
     }
     try:
         response = requests.post(url, headers=headers, data=data, proxies=proxies)
@@ -33,8 +32,8 @@ def get_categories_id(manf):
         return
 
 
-def get_Item_names(manf , id):
-    manf= manf.strip()
+def get_Item_names(manf, id):
+    manf = manf.strip()
     url = "https://www.automationdirect.com/ajax?"
 
     proxies, headers = get_proxies()
@@ -42,7 +41,7 @@ def get_Item_names(manf , id):
     if not proxies or not headers:
         error_slack_message("No proxies or headers found")
         return
-    
+
     data = {
         "spellcheck": "null",
         "fctype": "adc.falcon.search.SearchFormCtrl",
@@ -50,10 +49,10 @@ def get_Item_names(manf , id):
         "searchquery": manf,
         "rawSearchquery": manf,
         "pageRefresh": "true",
-        "solrQueryString": {f'q={manf}&rows=50&facet=true'},
+        "solrQueryString": {f"q={manf}&rows=50&facet=true"},
         "productType": "",
         "controllingWidgetName": "Item_Type_ms",
-        "categoryId": id
+        "categoryId": id,
     }
     try:
         response = requests.post(url, headers=headers, data=data, proxies=proxies)

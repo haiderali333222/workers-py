@@ -16,30 +16,39 @@ def listToString(url):
 def extracted_name(skip_limit_start, skip_limit_end):
     result = []
     response = None
-    while response is None or response.get('hits').get('hits') is None:
-        response = es.search(index="products_1.0", body=search_param,
-                             from_=skip_limit_start, size=skip_limit_end)
-        for data in response.get('hits').get('hits'):
-            result.append(listToString(data.get('fields').get('name')))
+    while response is None or response.get("hits").get("hits") is None:
+        response = es.search(
+            index="products_1.0",
+            body=search_param,
+            from_=skip_limit_start,
+            size=skip_limit_end,
+        )
+        for data in response.get("hits").get("hits"):
+            result.append(listToString(data.get("fields").get("name")))
     return result
 
 
-def total_count(es_query = None):
+def total_count(es_query=None):
     if es_query is None:
         response = es.count(index="products_1.0", body=count_query)
     else:
         response = es.count(index="products_1.0", body=es_query)
-    total_products = response.get('count')
+    total_products = response.get("count")
     return total_products
+
 
 def extracted_products(skip_limit_start, skip_limit_end, es_query):
     result = []
     response = None
-    while response is None or response.get('hits').get('hits') is None:
-        response = es.search(index="products_1.0", body=es_query,
-                             from_=skip_limit_start, size=skip_limit_end)
-        for data in response.get('hits').get('hits'):
-            result.append(listToString(data.get('_source').get('name')))
+    while response is None or response.get("hits").get("hits") is None:
+        response = es.search(
+            index="products_1.0",
+            body=es_query,
+            from_=skip_limit_start,
+            size=skip_limit_end,
+        )
+        for data in response.get("hits").get("hits"):
+            result.append(listToString(data.get("_source").get("name")))
     return result
 
 
@@ -51,19 +60,25 @@ def extract_urls_from_es(query, skip_limit_start, skip_limit_end):
         while True:
             send_slack_message(f"Fetched URLS from Elasticsearch: {skip_limit_start}")
             print("Fetched URLS from Elasticsearch: ", skip_limit_start)
-            response = es.search(index="products_1.0", body=query,
-                                from_=skip_limit_start, size=skip_limit_end-1)
-            
-            hits = response.get('hits').get('hits')
+            response = es.search(
+                index="products_1.0",
+                body=query,
+                from_=skip_limit_start,
+                size=skip_limit_end - 1,
+            )
+
+            hits = response.get("hits").get("hits")
             if not hits:
                 break
             for data in hits:
-                if data.get('_source') and data.get('_source').get('url'):
-                    urls.append(f"https://www.electrical.com{data.get('_source').get('url')}")
+                if data.get("_source") and data.get("_source").get("url"):
+                    urls.append(
+                        f"https://www.electrical.com{data.get('_source').get('url')}"
+                    )
 
             if len(hits) < skip_limit_end:
                 break
-            
+
             skip_limit_start += skip_limit_end
         return urls
     except Exception as e:

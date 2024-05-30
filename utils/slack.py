@@ -2,6 +2,7 @@ import traceback
 from services.slack.slack_message import slack
 from config.index import ENVIRONMENT
 
+
 def slack_notify_info(title, subtitle, message):
     textMessage = f"{ENVIRONMENT} {subtitle or ''}{': ' if subtitle else ''}{message}"
     slackMessageBody = {
@@ -19,11 +20,12 @@ def slack_notify_error(title, subtitle, error):
                 "title": title,
                 "text": textMessage,
                 "color": "danger",
-                "mrkdwn_in": ["text"]
+                "mrkdwn_in": ["text"],
             }
         ]
     }
     slack(slackMessageBody)
+
 
 def send_slack_message(message):
     message = f"{ENVIRONMENT} {str(message)}"
@@ -36,6 +38,7 @@ def send_detailed_slack_message(title, message):
     payload = '{"text":"%s"}' % full_message
 
     return slack(payload)
+
 
 def error_slack_message(e):
     message = f"Error: {str(e)}" + "\n" + traceback.format_exc()

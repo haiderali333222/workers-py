@@ -3,8 +3,9 @@ from utils.slack import error_slack_message
 
 from .helper import *
 
-COMPETITOR = 'radwell'
-URL = 'https://www.radwell.co.uk/sitemap-index.xml'
+COMPETITOR = "radwell"
+URL = "https://www.radwell.co.uk/sitemap-index.xml"
+
 
 def get_and_store_radwell_urls():
     try:

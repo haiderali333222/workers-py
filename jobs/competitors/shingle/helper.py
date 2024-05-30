@@ -1,7 +1,7 @@
 from utils.helpers.index import clean_string, check_is_whole_word, get_page_from_url
 from utils.slack import error_slack_message
 
-COMPETITOR = 'shingle'
+COMPETITOR = "shingle"
 COMPETITOR_MANUFACTURERS = [
     "Banner Engineering Corp",
     "Turck Inc.",
@@ -72,28 +72,31 @@ COMPETITOR_MANUFACTURERS = [
     "Weg Electric Motors Corp.",
     "Weidmuller Inc.",
     "Yaskawa Electric America Inc.",
-    "Zero-Max Inc"
+    "Zero-Max Inc",
 ]
 MAX_LIMIT = 5000
 
+
 def form_url(manufacturer):
     try:
-        found_manufacturer = manufacturer.strip().replace(' ', '%20').replace(',', '%2C')
+        found_manufacturer = (
+            manufacturer.strip().replace(" ", "%20").replace(",", "%2C")
+        )
         return f"https://shingle.com/c?PageSize=50&Manufacturer={found_manufacturer}"
     except Exception as e:
         error_slack_message(e)
         return None
 
+
 def get_manufacturer_url(manufacturer):
     try:
         clean_manufacturer = clean_string(manufacturer)
-        clean_manufacturer_parts = clean_manufacturer.split(' ')
+        clean_manufacturer_parts = clean_manufacturer.split(" ")
         sub_list = []
 
         for part in clean_manufacturer_parts:
             for comp_manu in COMPETITOR_MANUFACTURERS:
                 url = clean_string(comp_manu, remove_company_status=True)
-
 
                 is_whole_word = check_is_whole_word(part, url)
                 if is_whole_word and len(part) > 1:
@@ -111,44 +114,44 @@ def get_manufacturer_url(manufacturer):
         error_slack_message(e)
         return None
 
-def fetch_and_store_all_search_results(
-    url,
-    is_first_page=False
-):
+
+def fetch_and_store_all_search_results(url, is_first_page=False):
     next_pages = []
     store_outputs = []
-    
-    print(f'fetching url: {url}')
-    
+
+    print(f"fetching url: {url}")
+
     try:
         page = get_page_from_url(url, COMPETITOR, stream=True, verify=False)
 
         if not page:
             return store_outputs, next_pages
-        
+
         if is_first_page:
-            if links_wrapper := page.find('div', class_='CurrentPage'):
-                links = links_wrapper.find_all('a', class_='page-link')
+            if links_wrapper := page.find("div", class_="CurrentPage"):
+                links = links_wrapper.find_all("a", class_="page-link")
                 for link in links:
-                    
-                    if link['href'] == '#':
+
+                    if link["href"] == "#":
                         continue
-                    
+
                     url = f"https://shingle.com{link['href']}"
                     next_pages.append(url)
-        
-        if products_wrapper := page.findAll('div', class_='ItemData'):
+
+        if products_wrapper := page.findAll("div", class_="ItemData"):
             for product in products_wrapper:
-                if product_link := product.find('a'):
+                if product_link := product.find("a"):
                     url = f"https://shingle.com{product_link['href']}"
-                    store_outputs.append({
-                        "competitor": COMPETITOR,
-                        "url": url,
-                        "scraper_type": "live_search",
-                        'from_manufacturer': True
-                    })
-                    
+                    store_outputs.append(
+                        {
+                            "competitor": COMPETITOR,
+                            "url": url,
+                            "scraper_type": "live_search",
+                            "from_manufacturer": True,
+                        }
+                    )
+
     except Exception as e:
         error_slack_message(e)
-        
+
     return store_outputs, next_pages
