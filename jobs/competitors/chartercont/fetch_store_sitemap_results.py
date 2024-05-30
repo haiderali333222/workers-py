@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup
 from random_user_agent.user_agent import UserAgent
 from random_user_agent.params import SoftwareName, OperatingSystem
 
-from services.slack.slack_message import send_slack_message
+from utils.slack import send_slack_message
 from utils.helpers.index import url_insert_bulk, request_with_retry, get_proxies, error_slack_message
 
 COMPETITOR = "chartercontact"

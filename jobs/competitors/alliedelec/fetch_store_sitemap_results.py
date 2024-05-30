@@ -1,6 +1,6 @@
 from .helper import *
 from utils.helpers.index import request_with_retry, get_proxies, download_gz_file, error_slack_message
-from services.slack.slack_message import send_slack_message
+from utils.slack import send_slack_message
 
 
 COMPETITOR = 'alliedelec'

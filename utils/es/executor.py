@@ -2,7 +2,7 @@ import traceback
 
 from services.elastic_search.connection import es
 from utils.es.es_query import search_param, count_query
-from services.slack.slack_message import send_slack_message
+from utils.slack import send_slack_message
 
 
 def listToString(url):

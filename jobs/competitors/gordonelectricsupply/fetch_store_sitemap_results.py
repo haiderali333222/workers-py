@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 
 from utils.helpers.index import error_slack_message, download_gz_file
 from .helper import *
-from services.slack.slack_message import send_slack_message
+from utils.slack import send_slack_message
 
 from config.index import API_KEY_SCRAPY
 

@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 
 from utils.helpers.index  import request_with_retry, get_proxies, url_insert_bulk
 from utils.es.executor import total_count, extracted_name
-from services.slack.slack_message import send_slack_message
+from utils.slack import send_slack_message
 
 
 count = 0

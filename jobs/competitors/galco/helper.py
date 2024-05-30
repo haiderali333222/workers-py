@@ -1,5 +1,5 @@
 from utils.helpers.index import request_with_retry, url_insert_bulk, get_proxies, error_slack_message, check_manufacturer_match, preprocess_manufacturers
-from services.slack.slack_message import send_slack_message
+from utils.slack import send_slack_message
 from bs4 import BeautifulSoup
 
 

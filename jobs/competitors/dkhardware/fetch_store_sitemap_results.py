@@ -2,7 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 
 from utils.helpers.index import url_insert_bulk, error_slack_message
-from services.slack.slack_message import send_slack_message
+from utils.slack import send_slack_message
 
 
 COMPETITOR = "dkhardware"

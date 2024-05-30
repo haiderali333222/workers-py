@@ -1,6 +1,6 @@
 from .helper import get_manufacturer_page_links,get_products_urls_and_store
 from utils.helpers.index import error_slack_message, error_slack_message
-from services.slack.slack_message import send_slack_message
+from utils.slack import send_slack_message
 
 COMPETITOR = 'galco'
 MANUFACTURERS_URL = 'https://www.galco.com/manufacturers'

@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 from utils.helpers.index import url_insert_bulk, request_with_retry, get_proxies, error_slack_message
-from services.slack.slack_message import send_slack_message
+from utils.slack import send_slack_message
 
 COMPETITOR = 'globaltestsupply'
 URL = 'https://www.globaltestsupply.com/sitemap.xml'

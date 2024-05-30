@@ -2,7 +2,7 @@
 from bs4 import BeautifulSoup
 
 from utils.helpers.index import get_proxies, request_with_retry, url_insert_bulk, error_slack_message
-from services.slack.slack_message import send_slack_message
+from utils.slack import send_slack_message
 
 
 COMPETITOR = "breakeroutlet"
