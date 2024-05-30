@@ -11,12 +11,10 @@ URL = 'https://www.imc-direct.com/sitemap.xml'
 
 def get_and_store_imcdirect_urls():
     try:
-        message = "start getting url for "+COMPETITOR
-        send_slack_message(message)
         outputs = []
         page = requests.get(URL)
         if page.status_code != 200:
-            message = "Error: "+COMPETITOR + page.text
+            message = f"Error: {COMPETITOR}{page.text}"
             send_slack_message(message)
         sitemap_index = BeautifulSoup(page.content, 'html.parser')
         sitemap_url = [

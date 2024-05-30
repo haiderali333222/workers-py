@@ -27,9 +27,9 @@ def get_and_store_chartercontact_urls():
         proxies, headers = get_proxies()
         page = request_with_retry(
             "get", URL, COMPETITOR, proxies=proxies, headers=headers)
-        
+
         if page.status_code != 200:
-            message = "Error: "+COMPETITOR + page.text
+            message = f"Error: {COMPETITOR}{page.text}"
             send_slack_message(message)
         sitemap_index = BeautifulSoup(page.content, 'html.parser')
         urls = [element.text for element in sitemap_index.findAll('loc')]

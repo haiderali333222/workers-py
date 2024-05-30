@@ -15,7 +15,7 @@ def get_and_store_breakerauthority_urls():
         scrape_api = f'https://api.scraperapi.com/?api_key={API_KEY_SCRAPY}&url={URL}&render=true'
         page = requests.get(scrape_api)
         if page.status_code != 200:
-            message = "Error:  "+COMPETITOR + page.text
+            message = f"Error:  {COMPETITOR} {page.text}"
             send_slack_message(message)
         sitemap_index = BeautifulSoup(page.content, 'html.parser')
         sitemap_url = [

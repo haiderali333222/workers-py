@@ -11,8 +11,6 @@ URL = 'https://www.iesupply.com/sitemaps/sitemap-products-0.xml'
 
 def get_and_store_iesupplyy_urls():
     try:
-        message = "start getting url for " + COMPETITOR
-        send_slack_message(message)
         outputs = []
         software_names = [SoftwareName.CHROME.value]
         operating_systems = [OperatingSystem.WINDOWS.value,
@@ -28,7 +26,7 @@ def get_and_store_iesupplyy_urls():
             "get", URL, COMPETITOR, proxies=proxies, headers=headers)
 
         if page.status_code != 200:
-            message = "Error: "+COMPETITOR + page.text
+            message = f"Error: {COMPETITOR} {page.text}"
             send_slack_message(message)
         sitemap_index = BeautifulSoup(page.content, 'html.parser')
         sitemap_url = [

@@ -12,10 +12,9 @@ URL = 'https://www.baypower.com/pub/media/sitemap.xml'
 def get_and_store_baypower_urls():
     try:
         outputs = []
-
         page = requests.get(URL)
         if page.status_code != 200:
-            message = "Error: "+COMPETITOR + page.text
+            message = f"Error: {COMPETITOR}{page.text}"
             send_slack_message(message)
         sitemap_index = BeautifulSoup(page.content, 'html.parser')
         sitemap_url = [
