@@ -26,7 +26,6 @@ def get_and_store_superbreakers_urls():
                     if len(outputs) == MAX_COUNT:
                         url_insert_bulk(outputs)
                         outputs = []
-                        break
         if outputs and len(outputs):
             url_insert_bulk(outputs)
     except Exception as e:

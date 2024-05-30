@@ -59,8 +59,6 @@ COMPETITOR_MAPPING = {
     "radwell": get_and_store_radwell_urls,
     "relectric": get_and_store_relectric_urls,
     "scheiderelectric": get_and_store_scheiderElectric_urls,
-    
-    
     "onlinecomponents": get_and_store_online_components_urls,
     'digikey': get_and_store_digikey_urls,
     'masterelectronics': get_and_store_master_electronics_urls,
@@ -77,9 +75,7 @@ COMPETITOR_MAPPING = {
     
     # With LiveSearch
     "coasttocoastbreaker": get_and_store_coasttocoastbreaker_urls,
-    "galco": get_and_store_galco_urls,
-    
-    
+    "galco": get_and_store_galco_urls,    
     'mouser': get_and_store_mouser_urls,
     'shingle': get_and_store_shingle_urls,
     'newark': get_and_store_newark_urls,

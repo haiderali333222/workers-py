@@ -1,27 +1,11 @@
-import time
-import requests
-
 from config.index import API_KEY_SCRAPY
-from utils.slack import send_slack_message, error_slack_message
-from utils.helpers.index import get_proxies, request_with_retry
+from utils.slack import error_slack_message
+from utils.helpers.index import get_proxies, request_with_retry, download_gz_file
 
 from .read_gz import *
 
 MAX_RETRIES = 5
 URL = 'https://www.plchardware.com/sitemap/sitemaps.xml'
-
-
-def download_gz(url, count, chunk_size=125000):
-    retries = 0
-    scraper_api_url = f'https://api.scraperapi.com/?api_key={API_KEY_SCRAPY}&url={url}'
-
-    while retries < MAX_RETRIES:
-        response = requests.get(scraper_api_url)
-        if response.status_code == 200:
-            break
-        retries += 1
-        time.sleep(2)
-    open(f"sitemap-plchardware{str(count)}.xml.gz", "wb").write(response.content)
 
 
 def get_and_store_plchardware_urls():
@@ -37,7 +21,7 @@ def get_and_store_plchardware_urls():
         for data in sitemap_url:
             if 'product' in data:
                 count += 1
-                download_gz(data, count)
-                store_data(f"sitemap-plchardware{count}.xml.gz")
+                path = download_gz_file('plchardware',data, count)
+                store_data(path)
     except Exception as e:
         error_slack_message(e)

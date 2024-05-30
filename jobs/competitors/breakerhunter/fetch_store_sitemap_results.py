@@ -1,35 +1,26 @@
-import requests
-from bs4 import BeautifulSoup
-from utils.helpers.index import url_insert_bulk, error_slack_message
-from utils.slack import send_slack_message
+from utils.helpers.index import url_insert_bulk, error_slack_message, get_sitemap_urls
 
 
 COMPETITOR = "breakerhunter"
 URL = 'https://breakerhunters.com/sitemap.xml'
-
+MAX_COUNT = 5000
 
 def get_and_store_breakerhunters_urls():
     try:
-        page = requests.get(URL)
-        if page.status_code != 200:
-            message = f"Error: {COMPETITOR} {page.text}"
-            send_slack_message(message)
-        sitemap_index = BeautifulSoup(page.content, 'html.parser')
-        urls = [element.text for element in sitemap_index.findAll('loc')]
+        sitemap_urls = get_sitemap_urls(URL, COMPETITOR)
         outputs = []
-        for data in urls:
-            if 'sitemap_products' in data:
-                sitemap = requests.get(data)
-                result_index = BeautifulSoup(sitemap.content, 'html.parser')
-                for element in result_index.findAll('loc'):
-                    if '/products' in element.text:
+        for sitemap_url in sitemap_urls:
+            if 'sitemap_products' in sitemap_url:
+                website_urls = get_sitemap_urls(sitemap_url, COMPETITOR)
+                for website_url in website_urls:
+                    if '/products' in website_url:
                         result = {
                             "competitor": COMPETITOR,
-                            "url": element.text,
+                            "url": website_url,
                             "scraper_type": "sitemap"
                         }
                         outputs.append(result)
-                        if len(outputs) == 5000:
+                        if len(outputs) >= MAX_COUNT:
                             url_insert_bulk(outputs)
                             outputs = []
         if outputs and len(outputs):

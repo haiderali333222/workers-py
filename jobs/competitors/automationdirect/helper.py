@@ -3,7 +3,7 @@ import requests
 
 COMPETITOR = "automationdirect"
 URL = "https://www.automationdirect.com/adc/shopping/catalog/"
-MAX_COUNT = 1000
+MAX_COUNT = 5000
 
 
 def get_categories_id(manf):

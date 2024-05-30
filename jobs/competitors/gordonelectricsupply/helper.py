@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 
 from utils.helpers.index import url_insert_bulk, read_gz_file, error_slack_message
-
+MAX_COUNT = 5000
 
 def store_data(url):
     try:
@@ -20,7 +20,7 @@ def store_data(url):
                     "scraper_type": "sitemap"
                 }
                 outputs.append(result)
-                if len(outputs) == 5000:
+                if len(outputs) == MAX_COUNT:
                     url_insert_bulk(outputs)
                     outputs = []
         if outputs and len(outputs):

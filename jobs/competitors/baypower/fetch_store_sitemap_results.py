@@ -1,9 +1,4 @@
-import requests
-
-from bs4 import BeautifulSoup
-
-from utils.helpers.index import error_slack_message, url_insert_bulk
-from utils.slack import send_slack_message
+from utils.helpers.index import error_slack_message, url_insert_bulk, get_sitemap_urls
 
 COMPETITOR = "baypower"
 URL = 'https://www.baypower.com/pub/media/sitemap.xml'
@@ -12,14 +7,9 @@ URL = 'https://www.baypower.com/pub/media/sitemap.xml'
 def get_and_store_baypower_urls():
     try:
         outputs = []
-        page = requests.get(URL)
-        if page.status_code != 200:
-            message = f"Error: {COMPETITOR}{page.text}"
-            send_slack_message(message)
-        sitemap_index = BeautifulSoup(page.content, 'html.parser')
-        sitemap_url = [
-            element.text for element in sitemap_index.findAll('loc')]
-        for data in sitemap_url:
+        sitemap_urls = get_sitemap_urls(URL, COMPETITOR)
+        print(f"Total URLs: {len(sitemap_urls)}")
+        for data in sitemap_urls:
             result = {
                 "competitor": COMPETITOR,
                 "url": data,

@@ -1,8 +1,7 @@
 from bs4 import BeautifulSoup
 
 from utils.helpers.index  import read_gz_file, url_insert_bulk
-
-
+MAX_COUNT = 5000
 def store_data(url):
     outputs = []
     file_content = read_gz_file(url)
@@ -20,7 +19,7 @@ def store_data(url):
                     "scraper_type": "sitemap"
                 }
                 outputs.append(result)
-                if len(outputs) == 5000:
+                if len(outputs) == MAX_COUNT:
                     url_insert_bulk(outputs)
                     outputs = []
     if outputs and len(outputs):

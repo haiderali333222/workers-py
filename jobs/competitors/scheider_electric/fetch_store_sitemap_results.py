@@ -1,31 +1,16 @@
-import requests
+from utils.helpers.index  import url_insert_bulk, get_sitemap_urls
+from utils.slack import error_slack_message
 
-from bs4 import BeautifulSoup
-
-from utils.helpers.index  import url_insert_bulk, error_slack_message
-from utils.slack import send_slack_message
-
-COMPETITOR = 'scheiderElectric'
+COMPETITOR = 'scheiderelectric'
 URL = 'https://www.se.com/us/en/product/google-product-sitemapindex-US-en.xml'
-
+MAX_COUNT = 5000
 
 def get_and_store_scheiderElectric_urls():
     try:
         outputs = []
-        page = requests.get(URL)
-        if page.status_code != 200:
-            message = f"Error: {COMPETITOR} {page.text}"
-            send_slack_message(message)
-        sitemap_index = BeautifulSoup(page.content, 'html.parser')
-        sitemap_url = [
-            element.text for element in sitemap_index.findAll('loc')]
+        sitemap_url = get_sitemap_urls(URL, COMPETITOR)
         for data in sitemap_url:
-            data = data.strip()
-            page_data = requests.get(data)
-            sitemap_index_data = BeautifulSoup(
-                page_data.content, 'html.parser')
-            sitemap_url_data = [
-                element.text for element in sitemap_index_data.findAll('loc')]
+            sitemap_url_data = get_sitemap_urls(data, COMPETITOR)
             for i in sitemap_url_data:
                 result = {
                     "competitor": COMPETITOR,
@@ -33,7 +18,7 @@ def get_and_store_scheiderElectric_urls():
                     "scraper_type": "sitemap"
                 }
                 outputs.append(result)
-                if len(outputs) == 5000:
+                if len(outputs) == MAX_COUNT:
                     url_insert_bulk(outputs)
                     outputs = []
         if outputs and len(outputs):

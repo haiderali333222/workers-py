@@ -14,7 +14,7 @@ def get_and_store_coasttocoastbreaker_urls():
         executor = concurrent.futures.ThreadPoolExecutor(20)
         while i < total_products:
             mydb_col_output = extracted_name(i, increment_value)
-            i = i + increment_value
+            i += increment_value
             for data in mydb_col_output:
                 executor.submit(creating_url, data)
     except Exception as e:

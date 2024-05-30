@@ -5,7 +5,7 @@ COMPETITOR = 'newark'
 MANUFACTURERS_URL = 'https://www.newark.com/manufacturers'
 BASE_URL = 'https://www.newark.com'
 PAGE_LIMIT = 25
-MAX_COUNT = 500
+MAX_COUNT = 5000
 
 manufacturers_match_status = {}
 

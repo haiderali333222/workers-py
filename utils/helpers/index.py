@@ -100,9 +100,17 @@ def url_insert_bulk(data, from_manufacturer = False):
     except Exception as e:
         error_slack_message(e)
 
-def download_gz_file(competitor_name, url, count):
+def download_gz_file(competitor_name, url, count, ultra_premium=False, premium=False, render=False):
     try:
         scrape_api = f'https://api.scraperapi.com/?api_key={API_KEY_SCRAPY}&url={url}'
+        
+        if ultra_premium:
+            scrape_api = f'{scrape_api}&ultra_premium=true'
+        elif premium:
+            scrape_api = f'{scrape_api}&premium=true'
+        if render:
+            scrape_api = f'{scrape_api}&render=true'
+        
         # response = requests.get(scrape_api)
         proxies, headers = get_proxies()
         response = request_with_retry(
@@ -114,6 +122,7 @@ def download_gz_file(competitor_name, url, count):
         file_path = os.path.join("trash", file_name)
         with open(file_path, "wb") as file:
             file.write(response.content)
+        print(f"Downloaded {file_name}")
         return file_path
     except Exception as e:
         error_slack_message(e)
@@ -181,7 +190,11 @@ def get_sitemap_urls(url_to_parse, competitor):
             message = f"Error: {competitor} {page.text}"
             send_slack_message(message)
         sitemap_index = BeautifulSoup(page.content, 'xml')  # Use XML parser explicitly
-        return [element.text for element in sitemap_index.findAll('loc')]
+        found_urls = [element.text for element in sitemap_index.findAll('loc')]
+        
+        print(f"Total URLs: {len(found_urls)} for {url_to_parse}")
+        
+        return found_urls
     except Exception as e:
         error_slack_message(e)
         return []
