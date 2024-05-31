@@ -1,4 +1,5 @@
-from utils.helpers.index import url_insert_bulk, error_slack_message, get_sitemap_urls
+from utils.helpers.index import url_insert_bulk, get_sitemap_urls
+from utils.slack import detailed_error_slack_message
 
 COMPETITOR = "mc_mc"
 MAIN_SITEMAP_URL = "https://www.mc-mc.com/sitemapindex.xml"
@@ -28,4 +29,4 @@ def get_and_store_mc_mc_urls():
             if outputs and len(outputs):
                 url_insert_bulk(outputs)
     except Exception as e:
-        error_slack_message(e)
+        detailed_error_slack_message(e, COMPETITOR)

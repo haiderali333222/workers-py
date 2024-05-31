@@ -3,7 +3,7 @@ from utils.helpers.index import (
     preprocess_manufacturers,
     get_sitemap_urls,
 )
-from utils.slack import error_slack_message
+from utils.slack import detailed_error_slack_message
 
 from .helper import (
     COMPETITOR,
@@ -55,4 +55,4 @@ def get_and_store_walker_industrial_urls():
             outputs = []
 
     except Exception as e:
-        error_slack_message(e)
+        detailed_error_slack_message(e, COMPETITOR)

@@ -1,15 +1,22 @@
 import re
-from utils.helpers.index import error_slack_message, check_manufacturer_match
+from utils.helpers.index import check_manufacturer_match
+from utils.slack import detailed_error_slack_message
 
 
 def is_valid_url_and_manufacturer(url):
     try:
-        pattern = (
-            r"^https://www\.onlinecomponents\.com/en/([^/]+)/([^/]+)(?:\.([^/]+))?/?$"
-        )
-        return (True, match[1]) if (match := re.match(pattern, url)) else (False, None)
+        if "productdetail" in url:
+            url_parts = url.split("/")
+
+            if len(url_parts) < 5:
+                return False, None
+
+            if product_manufacture := url_parts[-2]:
+                return True, product_manufacture
+
+        return False, None
     except Exception as e:
-        error_slack_message(e)
+        detailed_error_slack_message(e, "onlinecomponents")
         return False, None
 
 
@@ -29,5 +36,5 @@ def is_manufacturer_match(manufacturers_dict, product_manufacture):
 
         return is_match
     except Exception as e:
-        error_slack_message(e)
+        detailed_error_slack_message(e, "onlinecomponents")
         return False

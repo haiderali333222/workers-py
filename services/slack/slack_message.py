@@ -3,13 +3,14 @@ from config.index import SLACK_HEADER, IS_LOCAL
 import requests
 import json
 
+
 def slack(slackMessageBody):
-    if IS_LOCAL:
-        print("Slack Message: ",json.dumps(slackMessageBody))
-        return
+    # if IS_LOCAL:
+    print("Slack Message: ", json.dumps(slackMessageBody))
+    #     return
 
     headers = {
-        'content-type': 'application/json',
+        "content-type": "application/json",
     }
 
     try:

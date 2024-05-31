@@ -32,7 +32,7 @@ def store_radwell(url_formed):
 
     if response.status_code != 200:
         message = "Error: radwell " + response.text
-        send_slack_message(message)
+        send_slack_message(message, "error")
         return
     soup = BeautifulSoup(response.content, "html5lib")
     products_details = soup.find("div", attrs={"id": "searchResults"})
@@ -65,4 +65,4 @@ def creating_url(name):
         store_radwell(url_formed)
     except Exception as e:
         message = "Error: " + str(e) + "\n" + traceback.format_exc()
-        send_slack_message(message)
+        send_slack_message(message, "error")

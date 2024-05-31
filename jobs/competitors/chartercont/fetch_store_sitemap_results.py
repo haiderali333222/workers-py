@@ -1,9 +1,5 @@
-from bs4 import BeautifulSoup
-from random_user_agent.user_agent import UserAgent
-from random_user_agent.params import SoftwareName, OperatingSystem
-
-from utils.slack import send_slack_message
-from utils.helpers.index import url_insert_bulk, get_sitemap_urls, error_slack_message
+from utils.slack import detailed_error_slack_message
+from utils.helpers.index import url_insert_bulk, get_sitemap_urls
 
 COMPETITOR = "chartercontact"
 URL = "http://www.chartercontact.com/sitemap.xml"
@@ -23,4 +19,4 @@ def get_and_store_chartercontact_urls():
         if outputs and len(outputs):
             url_insert_bulk(outputs)
     except Exception as e:
-        error_slack_message(e)
+        detailed_error_slack_message(e, COMPETITOR)

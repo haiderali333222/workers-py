@@ -1,6 +1,6 @@
 from .helper import BeautifulSoup, store_data
 from utils.helpers.index import get_sitemap_urls, download_gz_file, error_slack_message
-from utils.slack import send_slack_message
+from utils.slack import detailed_error_slack_message
 
 COMPETITOR = "kele"
 URL = "https://www.kele.com/sitemap-index.xml"
@@ -16,4 +16,4 @@ def get_and_store_kele_urls():
                 path = download_gz_file(COMPETITOR, data, count)
                 store_data(path)
     except Exception as e:
-        error_slack_message(e)
+        detailed_error_slack_message(e, COMPETITOR)

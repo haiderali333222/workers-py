@@ -1,10 +1,8 @@
 from utils.helpers.index import (
     url_insert_bulk,
-    error_slack_message,
-    error_slack_message,
     get_page_with_scraperapi_from_url,
 )
-from utils.slack import error_slack_message
+from utils.slack import detailed_error_slack_message
 from .helper import (
     BASE_URL,
     COMPETITOR,
@@ -62,7 +60,9 @@ def get_manufacturer_products_links(manufacturer_page_link):
                         products_links_outputs = []
                         count = 0
     except Exception as e:
-        error_slack_message(e)
+        detailed_error_slack_message(e, COMPETITOR)
+    if len(products_links_outputs) > 0:
+        url_insert_bulk(products_links_outputs)
 
 
 def get_and_store_mouser_urls():
@@ -73,4 +73,4 @@ def get_and_store_mouser_urls():
             get_manufacturer_products_links(manufacturer_page_link)
 
     except Exception as e:
-        error_slack_message(e)
+        detailed_error_slack_message(e, COMPETITOR)

@@ -1,12 +1,11 @@
 from config.index import API_KEY_SCRAPY
 from utils.helpers.index import (
-    error_slack_message,
     url_insert_bulk,
     get_sitemap_urls,
     preprocess_manufacturers,
 )
 from .helper import extract_manufacturer_from_url, is_manufacturer_match
-
+from utils.slack import detailed_error_slack_message
 
 COMPETITOR = "digikey"
 URL = "https://www.digikey.com/product-detail/sitemap.xml"
@@ -54,4 +53,4 @@ def get_and_store_digikey_urls():
             outputs = []
 
     except Exception as e:
-        error_slack_message(e)
+        detailed_error_slack_message(e, COMPETITOR)

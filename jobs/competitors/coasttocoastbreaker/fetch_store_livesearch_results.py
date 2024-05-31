@@ -1,8 +1,8 @@
 import concurrent.futures
 
-from .helper import creating_url
-from utils.helpers.index import error_slack_message
+from .helper import creating_url, COMPETITOR
 from utils.es.executor import total_count, extracted_name
+from utils.slack import detailed_error_slack_message
 
 
 def get_and_store_coasttocoastbreaker_urls():
@@ -17,4 +17,4 @@ def get_and_store_coasttocoastbreaker_urls():
             for data in mydb_col_output:
                 executor.submit(creating_url, data)
     except Exception as e:
-        error_slack_message(e)
+        detailed_error_slack_message(e, COMPETITOR)

@@ -1,4 +1,6 @@
-from utils.helpers.index import get_proxies, error_slack_message
+from utils.helpers.index import get_proxies
+from utils.slack import send_slack_message, detailed_error_slack_message
+
 import requests
 
 COMPETITOR = "automationdirect"
@@ -28,7 +30,7 @@ def get_categories_id(manf):
         response = requests.post(url, headers=headers, data=data, proxies=proxies)
         return response.json()
     except ValueError:
-        error_slack_message(ValueError)
+        detailed_error_slack_message(ValueError, COMPETITOR)
         return
 
 
@@ -39,7 +41,7 @@ def get_Item_names(manf, id):
     proxies, headers = get_proxies()
 
     if not proxies or not headers:
-        error_slack_message("No proxies or headers found")
+        send_slack_message("No proxies or headers found", "error")
         return
 
     data = {
@@ -58,5 +60,5 @@ def get_Item_names(manf, id):
         response = requests.post(url, headers=headers, data=data, proxies=proxies)
         return response.json()
     except ValueError:
-        error_slack_message(ValueError)
+        detailed_error_slack_message(ValueError, COMPETITOR)
         return

@@ -1,11 +1,12 @@
 from config.index import API_KEY_SCRAPY
-from utils.slack import error_slack_message
+from utils.slack import detailed_error_slack_message
 from utils.helpers.index import get_proxies, request_with_retry, download_gz_file
 
 from .read_gz import *
 
 MAX_RETRIES = 5
 URL = "https://www.plchardware.com/sitemap/sitemaps.xml"
+COMPETITOR = "plchardware"
 
 
 def get_and_store_plchardware_urls():
@@ -32,4 +33,4 @@ def get_and_store_plchardware_urls():
                 path = download_gz_file("plchardware", data, count)
                 store_data(path)
     except Exception as e:
-        error_slack_message(e)
+        detailed_error_slack_message(e, COMPETITOR)

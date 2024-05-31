@@ -2,8 +2,8 @@ from utils.helpers.index import (
     get_proxies,
     request_with_retry,
     url_insert_bulk,
-    error_slack_message,
 )
+from utils.slack import detailed_error_slack_message
 
 COMPETITOR = "coasttocoastbreaker"
 URL = "https://www.coasttocoastbreaker.com/search/ajax/suggest/?q="
@@ -38,7 +38,7 @@ def store_cosotocost(url_formed):
             url_insert_bulk(outputs)
         return True
     except Exception as e:
-        error_slack_message(e)
+        detailed_error_slack_message(e, COMPETITOR)
 
 
 def creating_url(name):
@@ -47,4 +47,4 @@ def creating_url(name):
         url_formed += name
         store_cosotocost(url_formed)
     except Exception as e:
-        error_slack_message(e)
+        detailed_error_slack_message(e, COMPETITOR)

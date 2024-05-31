@@ -1,5 +1,9 @@
 from .helper import *
-from utils.helpers.index import get_sitemap_urls, download_gz_file, error_slack_message
+from utils.helpers.index import (
+    get_sitemap_urls,
+    download_gz_file,
+    detailed_error_slack_message,
+)
 from config.index import API_KEY_SCRAPY
 
 
@@ -16,4 +20,4 @@ def get_and_store_alliedelec_urls():
             path = download_gz_file(COMPETITOR, data, count)
             store_data(path)
     except Exception as e:
-        error_slack_message(e)
+        detailed_error_slack_message(e, COMPETITOR)

@@ -1,5 +1,5 @@
-from utils.helpers.index import url_insert_bulk, error_slack_message, get_sitemap_urls
-from utils.slack import send_slack_message
+from utils.helpers.index import url_insert_bulk, get_sitemap_urls
+from utils.slack import detailed_error_slack_message
 
 COMPETITOR = "classicautomation"
 MAIN_SITEMAP_URL = "https://www.classicautomation.com/sitemap.aspx"
@@ -25,8 +25,8 @@ def get_and_store_classic_automation_urls():
                             url_insert_bulk(outputs)
                             outputs = []
             except Exception as e:
-                send_slack_message(e)
+                detailed_error_slack_message(e, COMPETITOR)
         if outputs and len(outputs):
             url_insert_bulk(outputs)
     except Exception as e:
-        error_slack_message(e)
+        detailed_error_slack_message(e, COMPETITOR)

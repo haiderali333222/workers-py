@@ -1,5 +1,5 @@
 from utils.helpers.index import url_insert_bulk, get_sitemap_urls
-from utils.slack import error_slack_message
+from utils.slack import detailed_error_slack_message
 
 COMPETITOR = "scheiderelectric"
 URL = "https://www.se.com/us/en/product/google-product-sitemapindex-US-en.xml"
@@ -21,4 +21,4 @@ def get_and_store_scheiderElectric_urls():
         if outputs and len(outputs):
             url_insert_bulk(outputs)
     except Exception as e:
-        error_slack_message(e)
+        detailed_error_slack_message(e, COMPETITOR)

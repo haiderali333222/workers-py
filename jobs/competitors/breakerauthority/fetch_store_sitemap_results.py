@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
-from utils.helpers.index import error_slack_message, url_insert_bulk
-from utils.slack import send_slack_message
+from utils.helpers.index import url_insert_bulk
+from utils.slack import send_slack_message, detailed_error_slack_message
 
 from config.index import API_KEY_SCRAPY
 
@@ -16,7 +16,7 @@ def get_and_store_breakerauthority_urls():
         page = requests.get(scrape_api)
         if page.status_code != 200:
             message = f"Error:  {COMPETITOR} {page.text}"
-            send_slack_message(message)
+            send_slack_message(message, "error")
         sitemap_index = BeautifulSoup(page.content, "html.parser")
         sitemap_url = [element.text for element in sitemap_index.findAll("loc")]
         outputs = []
@@ -38,4 +38,4 @@ def get_and_store_breakerauthority_urls():
         if outputs and len(outputs):
             url_insert_bulk(outputs)
     except Exception as e:
-        error_slack_message(e)
+        detailed_error_slack_message(e, COMPETITOR)
