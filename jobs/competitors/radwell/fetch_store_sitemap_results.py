@@ -1,5 +1,5 @@
 from utils.helpers.index import get_sitemap_urls, download_gz_file
-from utils.slack import error_slack_message
+from utils.slack import detailed_error_slack_message
 
 from .helper import *
 
@@ -14,4 +14,4 @@ def get_and_store_radwell_urls():
             path = download_gz_file(COMPETITOR, data, count)
             store_data(path)
     except Exception as e:
-        error_slack_message(e)
+        detailed_error_slack_message(e, COMPETITOR)

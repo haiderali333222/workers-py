@@ -1,11 +1,10 @@
 from .helper import is_manufacturer_match, is_valid_url_and_manufacturer
 from utils.helpers.index import (
-    error_slack_message,
-    check_manufacturer_match,
     url_insert_bulk,
     preprocess_manufacturers,
     get_sitemap_urls,
 )
+from utils.slack import detailed_error_slack_message
 
 COMPETITOR = "onlinecomponents"
 STARTING_URL = "https://www.onlinecomponents.com/sitemaps.xml"
@@ -40,7 +39,6 @@ def get_and_store_online_components_urls():
                         "scraper_type": "sitemap",
                         "from_manufacturer": True,
                     }
-                    print(f"inserting, {count}")
                     outputs.append(result)
 
                 if count >= limit:
@@ -52,4 +50,4 @@ def get_and_store_online_components_urls():
             outputs = []
 
     except Exception as e:
-        error_slack_message(e)
+        detailed_error_slack_message(e, COMPETITOR)

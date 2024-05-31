@@ -1,8 +1,10 @@
 from bs4 import BeautifulSoup
 
-from utils.helpers.index import url_insert_bulk, read_gz_file, error_slack_message
+from utils.helpers.index import url_insert_bulk, read_gz_file
+from utils.slack import detailed_error_slack_message
 
 MAX_COUNT = 5000
+COMPETITOR = "gordonelectricsupply"
 
 
 def store_data(url):
@@ -17,7 +19,7 @@ def store_data(url):
                 data = data.replace("<loc>", "")
                 data = data.replace("</loc>", "")
                 result = {
-                    "competitor": "gordonelectricsupply",
+                    "competitor": COMPETITOR,
                     "url": data,
                     "scraper_type": "sitemap",
                 }
@@ -28,4 +30,4 @@ def store_data(url):
         if outputs and len(outputs):
             url_insert_bulk(outputs)
     except Exception as e:
-        error_slack_message(e)
+        detailed_error_slack_message(e, COMPETITOR)

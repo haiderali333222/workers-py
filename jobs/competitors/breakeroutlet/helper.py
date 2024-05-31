@@ -4,9 +4,8 @@ from utils.helpers.index import (
     get_proxies,
     request_with_retry,
     url_insert_bulk,
-    error_slack_message,
 )
-from utils.slack import send_slack_message
+from utils.slack import detailed_error_slack_message, send_slack_message
 
 
 COMPETITOR = "breakeroutlet"
@@ -19,7 +18,7 @@ def creating_url(name):
         url_formed += name
         store_breakerout(url_formed)
     except Exception as e:
-        error_slack_message(e)
+        detailed_error_slack_message(e, COMPETITOR)
 
 
 def store_breakerout(url_formed):
@@ -29,8 +28,8 @@ def store_breakerout(url_formed):
         "get", url_formed, COMPETITOR, proxies=proxies, headers=headers
     )
     if response.status_code != 200:
-        message = "Error:  " + COMPETITOR + response.text
-        send_slack_message(message)
+        message = f"Error:  {COMPETITOR} {response.text}"
+        send_slack_message(message, "error")
     soup = BeautifulSoup(response.content, "html5lib")
     products_details = soup.find("div", attrs={"id": "product-listing-container"})
     products_details_info = products_details.find(

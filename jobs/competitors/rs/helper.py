@@ -5,8 +5,11 @@ from utils.helpers.index import (
     preprocess_manufacturers,
     read_gz_file,
 )
-from utils.slack import error_slack_message
+from utils.slack import detailed_error_slack_message
 import re
+
+
+COMPETITOR = "us.rs-online"
 
 
 def extract_manufacturer_from_url(url):
@@ -18,7 +21,7 @@ def extract_manufacturer_from_url(url):
         else:
             return None, False
     except Exception as e:
-        error_slack_message(e)
+        detailed_error_slack_message(e, COMPETITOR)
         return None, False
 
 
@@ -46,7 +49,7 @@ def is_manufacturer_match(manufacturers_dict, manufacturer_name):
 
         return is_match
     except Exception as e:
-        error_slack_message(e)
+        detailed_error_slack_message(e, COMPETITOR)
         return False
 
 
@@ -83,4 +86,4 @@ def store_data(url):
             url_insert_bulk(outputs)
 
     except Exception as e:
-        error_slack_message(e)
+        detailed_error_slack_message(e, COMPETITOR)

@@ -1,16 +1,9 @@
-import requests
-
-from random_user_agent.user_agent import UserAgent
-from random_user_agent.params import SoftwareName, OperatingSystem
-from bs4 import BeautifulSoup
-
 from utils.helpers.index import (
     download_gz_file,
-    error_slack_message,
     preprocess_manufacturers,
     get_sitemap_urls,
 )
-from utils.slack import send_slack_message
+from utils.slack import detailed_error_slack_message
 
 from .helper import store_data
 
@@ -31,4 +24,4 @@ def get_and_store_zoro_urls():
                 path = download_gz_file(COMPETITOR, data, count)
                 store_data(path, manufacturers_dict)
     except Exception as e:
-        error_slack_message(e)
+        detailed_error_slack_message(e, COMPETITOR)

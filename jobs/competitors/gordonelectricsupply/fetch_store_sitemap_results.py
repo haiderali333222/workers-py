@@ -1,5 +1,6 @@
-from utils.helpers.index import error_slack_message, download_gz_file, get_sitemap_urls
+from utils.helpers.index import download_gz_file, get_sitemap_urls
 from config.index import API_KEY_SCRAPY
+from utils.slack import detailed_error_slack_message
 
 from .helper import *
 
@@ -15,4 +16,4 @@ def get_and_store_gordonelectricsupply_urls():
             path = download_gz_file(COMPETITOR, data, count, ultra_premium=True)
             store_data(path)
     except Exception as e:
-        error_slack_message(e)
+        detailed_error_slack_message(e, COMPETITOR)

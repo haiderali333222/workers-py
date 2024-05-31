@@ -1,5 +1,5 @@
 from utils.helpers.index import clean_string, check_is_whole_word, get_page_from_url
-from utils.slack import error_slack_message
+from utils.slack import detailed_error_slack_message
 
 COMPETITOR = "shingle"
 COMPETITOR_MANUFACTURERS = [
@@ -84,7 +84,7 @@ def form_url(manufacturer):
         )
         return f"https://shingle.com/c?PageSize=50&Manufacturer={found_manufacturer}"
     except Exception as e:
-        error_slack_message(e)
+        detailed_error_slack_message(e, COMPETITOR)
         return None
 
 
@@ -111,7 +111,7 @@ def get_manufacturer_url(manufacturer):
 
         return sub_list[0] if sub_list else None
     except Exception as e:
-        error_slack_message(e)
+        detailed_error_slack_message(e, COMPETITOR)
         return None
 
 
@@ -152,6 +152,6 @@ def fetch_and_store_all_search_results(url, is_first_page=False):
                     )
 
     except Exception as e:
-        error_slack_message(e)
+        detailed_error_slack_message(e, COMPETITOR)
 
     return store_outputs, next_pages

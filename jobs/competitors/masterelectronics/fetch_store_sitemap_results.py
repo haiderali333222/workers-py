@@ -1,10 +1,10 @@
 from utils.helpers.index import (
-    error_slack_message,
     url_insert_bulk,
     preprocess_manufacturers,
     get_sitemap_urls,
 )
 from .helper import is_valid_url_and_manufacturer, is_manufacturer_match
+from utils.slack import detailed_error_slack_message
 
 COMPETITOR = "masterelectronics"
 STARTING_URL = "https://www.masterelectronics.com/sitemaps.xml"
@@ -53,4 +53,4 @@ def get_and_store_master_electronics_urls():
             outputs = []
 
     except Exception as e:
-        error_slack_message(e)
+        detailed_error_slack_message(e, COMPETITOR)

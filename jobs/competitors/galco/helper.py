@@ -4,7 +4,7 @@ from utils.helpers.index import (
     check_manufacturer_match,
     preprocess_manufacturers,
 )
-from utils.slack import error_slack_message
+from utils.slack import detailed_error_slack_message
 
 COMPETITOR = "galco"
 MANUFACTURERS_URL = "https://www.galco.com/manufacturers"
@@ -28,7 +28,7 @@ def is_manufacturer_match(manufacturers_dict, product_title):
 
         return is_match
     except Exception as e:
-        error_slack_message(e)
+        detailed_error_slack_message(e, COMPETITOR)
         return False
 
 
@@ -54,7 +54,7 @@ def get_manufacturer_page_links():
                                     matched_manufacturer_link
                                 )
     except Exception as e:
-        error_slack_message(e)
+        detailed_error_slack_message(e, COMPETITOR)
     return manufacturer_page_links
 
 
@@ -84,13 +84,13 @@ def get_product_links_from_plp(plp_link, is_first_page=False):
                             next_page_link = f"{plp_link}&p={i}"
                             next_page_links.append(next_page_link)
     except Exception as e:
-        error_slack_message(e)
+        detailed_error_slack_message(e, COMPETITOR)
     return product_links, next_page_links
 
 
 def get_products_urls_and_store(product_list_page_link):
+    products_links_outputs = []
     try:
-        products_links_outputs = []
         product_links, next_pages = get_product_links_from_plp(
             product_list_page_link, is_first_page=True
         )
@@ -100,21 +100,27 @@ def get_products_urls_and_store(product_list_page_link):
             products_links_outputs.extend(first_page_links)
 
         for next_page in next_pages:
-            next_page_product_links, _ = get_product_links_from_plp(next_page)
+            try:
+                next_page_product_links, _ = get_product_links_from_plp(next_page)
 
-            if next_page_product_links:
-                found_links = add_product_links_to_outputs(next_page_product_links)
-                products_links_outputs.extend(found_links)
+                if next_page_product_links:
+                    found_links = add_product_links_to_outputs(next_page_product_links)
+                    products_links_outputs.extend(found_links)
 
-            if len(products_links_outputs) >= MAX_COUNT:
-                url_insert_bulk(products_links_outputs)
-                products_links_outputs = []
+                if len(products_links_outputs) >= MAX_COUNT:
+                    url_insert_bulk(products_links_outputs)
+                    products_links_outputs = []
+            except Exception as e:
+                detailed_error_slack_message(e, COMPETITOR)
+                continue
 
         if len(products_links_outputs) > 0:
             url_insert_bulk(products_links_outputs)
             products_links_outputs = []
     except Exception as e:
-        error_slack_message(e)
+        detailed_error_slack_message(e, COMPETITOR)
+    if len(products_links_outputs) > 0:
+        url_insert_bulk(products_links_outputs)
 
 
 def add_product_links_to_outputs(product_links):
@@ -131,5 +137,5 @@ def add_product_links_to_outputs(product_links):
                 }
                 product_links_outputs.append(result)
     except Exception as e:
-        error_slack_message(e)
+        detailed_error_slack_message(e, COMPETITOR)
     return product_links_outputs

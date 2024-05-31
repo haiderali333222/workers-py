@@ -3,7 +3,7 @@ from utils.helpers.index import (
     preprocess_manufacturers,
     get_page_with_scraperapi_from_url,
 )
-from utils.slack import send_slack_message
+from utils.slack import detailed_error_slack_message
 
 COMPETITOR = "mouser"
 MANUFACTURERS_URL = "https://eu.mouser.com/manufacturer/"
@@ -24,7 +24,7 @@ def is_manufacturer_match(manufacturers_dict, product_title):
 
         return is_match
     except Exception as e:
-        send_slack_message(e)
+        detailed_error_slack_message(e, COMPETITOR)
         return False
 
 
@@ -54,7 +54,7 @@ def get_manufacturer_page_links():
                                             matched_manufacturer_link
                                         )
     except Exception as e:
-        send_slack_message(e)
+        detailed_error_slack_message(e, COMPETITOR)
 
     return manufacturer_page_links
 
@@ -80,5 +80,5 @@ def get_product_links_from_plp(plp_link):
 
         return product_links, next_page_link
     except Exception as e:
-        send_slack_message(e)
-        return product_links, next_page_link
+        detailed_error_slack_message(e, COMPETITOR)
+    return product_links, next_page_link

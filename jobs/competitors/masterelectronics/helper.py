@@ -1,6 +1,6 @@
 import re
 from utils.helpers.index import check_manufacturer_match
-from utils.slack import error_slack_message
+from utils.slack import detailed_error_slack_message
 
 
 def is_valid_url_and_manufacturer(url):
@@ -13,7 +13,7 @@ def is_valid_url_and_manufacturer(url):
         return False, None
 
     except Exception as e:
-        error_slack_message(e)
+        detailed_error_slack_message(e, "masterelectronics")
         return False, None
 
 
@@ -32,5 +32,5 @@ def is_manufacturer_match(manufacturers_dict, product_manufacturer):
         return is_match
 
     except Exception as e:
-        error_slack_message(e)
+        detailed_error_slack_message(e, "masterelectronics")
         return False

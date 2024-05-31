@@ -1,9 +1,5 @@
-import requests
-
-from bs4 import BeautifulSoup
-
-from utils.helpers.index import url_insert_bulk, remove_outdated_urls
-from utils.slack import send_slack_message, error_slack_message
+from utils.helpers.index import url_insert_bulk, remove_outdated_urls, get_sitemap_urls
+from utils.slack import detailed_error_slack_message
 
 COMPETITOR = "sigmasurplus"
 MAX_COUNT = 5000
@@ -13,25 +9,16 @@ def get_and_store_sigmasurplus_urls():
     try:
         remove_outdated_urls(COMPETITOR)
         url = "https://sigmasurplus.com/xmlsitemap.php"
-        page = requests.get(url, stream=True)
-
         outputs = []
-        if page.status_code != 200:
-            message = f"Error: sigmasurplus {page.text}"
-            send_slack_message(message)
-
-        sitemap_index = BeautifulSoup(page.content, "html.parser")
-        urls = [element.text for element in sitemap_index.findAll("loc")]
+        urls = get_sitemap_urls(url, COMPETITOR)
         for data in urls:
             if "product" in data:
-                print(data)
-                sitemap = requests.get(data)
-                result_index = BeautifulSoup(sitemap.content, "html.parser")
+                website_urls = get_sitemap_urls(data, COMPETITOR)
                 try:
-                    for element in result_index.findAll("loc"):
+                    for website_url in website_urls:
                         result = {
                             "competitor": "sigmasurplus",
-                            "url": element.text,
+                            "url": website_url,
                             "scraper_type": "sitemap",
                         }
                         outputs.append(result)
@@ -39,9 +26,8 @@ def get_and_store_sigmasurplus_urls():
                             url_insert_bulk(outputs)
                             outputs = []
                 except Exception as e:
-                    message = "Loop breaking"
-                    send_slack_message(message)
+                    detailed_error_slack_message(e, COMPETITOR)
         if outputs and len(outputs):
             url_insert_bulk(outputs)
     except Exception as e:
-        error_slack_message(e)
+        detailed_error_slack_message(e, COMPETITOR)

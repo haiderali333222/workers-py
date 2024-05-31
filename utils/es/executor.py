@@ -83,4 +83,4 @@ def extract_urls_from_es(query, skip_limit_start, skip_limit_end):
         return urls
     except Exception as e:
         message = "Error: " + str(e) + "\n" + traceback.format_exc()
-        send_slack_message(message)
+        send_slack_message(message, "error")

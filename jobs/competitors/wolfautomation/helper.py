@@ -3,7 +3,7 @@ from utils.helpers.index import (
     preprocess_manufacturers,
     get_page_from_url,
 )
-from utils.slack import error_slack_message
+from utils.slack import detailed_error_slack_message
 
 
 COMPETITOR = "wolfautomation"
@@ -27,7 +27,7 @@ def is_manufacturer_match(manufacturers_dict, product_title):
 
         return is_match
     except Exception as e:
-        error_slack_message(e)
+        detailed_error_slack_message(e, COMPETITOR)
 
 
 def get_manufacturer_page_links():
@@ -70,7 +70,7 @@ def get_manufacturer_page_links():
                 else:
                     url_to_parse_manufacturer = None
     except Exception as e:
-        error_slack_message(e)
+        detailed_error_slack_message(e, COMPETITOR)
 
     return manufacturer_page_links
 
@@ -104,6 +104,6 @@ def get_product_links_from_plp(plp_link):
                         else:
                             next_page_link = next_page_link.strip()
     except Exception as e:
-        error_slack_message(e)
+        detailed_error_slack_message(e, COMPETITOR)
 
     return product_links, next_page_link
