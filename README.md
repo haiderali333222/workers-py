@@ -51,14 +51,21 @@ Below is a list of the main dependencies and their versions required to run this
 
 5. **Set Environment Variables**
 
-   Create a `.env` file in the root directory of the project and add the following environment variables:
+   Create a `.env` file in the root directory by copying the contents of the `.env.example` file and updating the values as needed.
 
    ```sh
-   REDIS_URL=redis://localhost:6379/0
-   SLACK_WEBHOOK_URL=<slack_webhook_url>
-   MONGO_URI=<mongo_uri>
-
-   ...additional environment variables...
+    CELERY_BROKER_URL=redis://localhost:6379/0
+    CELERY_RESULT_BACKEND=redis://localhost:6379/0
+    ENVIRONMENT=local
+    DB_URL=mongodb://127.0.0.1:27017/
+    DB_NAME=pricing
+    ELASTIC_SEARCH_URL=
+    ELASTIC_SEARCH_USERNAME=
+    ELASTIC_SEARCH_PASSWORD=
+    API_KEY_SCRAPY=
+    PROXY_CSV_URL=
+    SLACK_HEADER=
+    REDIS_URL=redis://localhost:6379/0
    ```
 
 6. **Run the Application**

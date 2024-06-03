@@ -29,7 +29,7 @@ if __name__ == "__main__":
         "--app",
         "services.celery.celery_app",
         "worker",
-        "--concurrency=auto",
+        "--concurrency=2",
         "-Q",
         "celery_queue_for_scrape_competitor_urls",
         "--pool=gevent",
