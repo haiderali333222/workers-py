@@ -2,7 +2,6 @@
 import random
 import gzip
 from time import sleep
-from bs4 import BeautifulSoup
 
 # Third-party library import
 import requests

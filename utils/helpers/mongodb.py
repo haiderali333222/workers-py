@@ -38,7 +38,6 @@ def url_insert_bulk(data, from_manufacturer=False):
 def remove_outdated_urls(competitor):
     try:
         db.competitor_url.delete_many({"competitor": competitor})
-        db_comp_product = db.competitor_url.find({"competitor": competitor})
 
         send_slack_message(
             f"Records successfully deleted and Updating outdated records status for {competitor}",

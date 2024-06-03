@@ -2,7 +2,7 @@ from utils.helpers.index import download_gz_file, get_sitemap_urls
 from config.index import API_KEY_SCRAPY
 from utils.slack import detailed_error_slack_message
 
-from .helper import *
+from .helper import store_data
 
 COMPETITOR = "gordonelectricsupply"
 URL = "https://www.gordonelectricsupply.com/sitemap-index.xml"

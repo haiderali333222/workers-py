@@ -1,8 +1,7 @@
-from .helper import BeautifulSoup, store_data
+from .helper import store_data
 from utils.helpers.index import (
     get_sitemap_urls,
     download_gz_file,
-    error_slack_message,
 )
 from utils.slack import detailed_error_slack_message
 

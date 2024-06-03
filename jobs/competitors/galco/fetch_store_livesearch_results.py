@@ -1,4 +1,3 @@
-from utils.helpers.index import error_slack_message
 from .helper import (
     get_manufacturer_page_links,
     get_products_urls_and_store,

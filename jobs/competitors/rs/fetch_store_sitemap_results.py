@@ -2,7 +2,7 @@ from utils.helpers.index import download_gz_file, get_sitemap_urls
 from utils.slack import detailed_error_slack_message
 from config.index import API_KEY_SCRAPY
 
-from .helper import *
+from .helper import store_data
 
 COMPETITOR = "us.rs-online"
 URL = "https://us.rs-online.com/sitemap.xml"
