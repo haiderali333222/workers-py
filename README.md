@@ -54,8 +54,6 @@ Below is a list of the main dependencies and their versions required to run this
    Create a `.env` file in the root directory by copying the contents of the `.env.example` file and updating the values as needed.
 
    ```sh
-    CELERY_BROKER_URL=redis://localhost:6379/0
-    CELERY_RESULT_BACKEND=redis://localhost:6379/0
     ENVIRONMENT=local
     DB_URL=mongodb://127.0.0.1:27017/
     DB_NAME=pricing
@@ -65,7 +63,6 @@ Below is a list of the main dependencies and their versions required to run this
     API_KEY_SCRAPY=
     PROXY_CSV_URL=
     SLACK_HEADER=
-    REDIS_URL=redis://localhost:6379/0
    ```
 
 6. **Run the Application**
