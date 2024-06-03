@@ -55,7 +55,6 @@ Below is a list of the main dependencies and their versions required to run this
 
    ```sh
     ENVIRONMENT=local
-    REDIS_URL=redis://localhost:6379/0
     DB_URL=mongodb://127.0.0.1:27017/
     DB_NAME=pricing
     ELASTIC_SEARCH_URL=
