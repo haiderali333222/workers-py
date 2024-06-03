@@ -1,3 +1,5 @@
+from bs4 import BeautifulSoup
+
 from config.index import API_KEY_SCRAPY
 from utils.slack import detailed_error_slack_message
 from utils.helpers.index import (
@@ -6,7 +8,7 @@ from utils.helpers.index import (
     download_gz_file,
 )
 
-from .read_gz import *
+from .read_gz import store_data
 
 MAX_RETRIES = 5
 URL = "https://www.plchardware.com/sitemap/sitemaps.xml"

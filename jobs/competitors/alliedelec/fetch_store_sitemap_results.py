@@ -1,9 +1,9 @@
-from .helper import *
+from .helper import store_data
 from utils.helpers.index import (
     get_sitemap_urls,
     download_gz_file,
-    detailed_error_slack_message,
 )
+from utils.slack import detailed_error_slack_message
 from config.index import API_KEY_SCRAPY
 
 

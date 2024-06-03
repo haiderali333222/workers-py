@@ -1,7 +1,7 @@
 from utils.helpers.index import get_sitemap_urls, download_gz_file
 from utils.slack import detailed_error_slack_message
 
-from .helper import *
+from .helper import store_data
 
 COMPETITOR = "radwell"
 URL = "https://www.radwell.co.uk/sitemap-index.xml"

@@ -1,4 +1,3 @@
-import re
 from utils.helpers.index import check_manufacturer_match
 from utils.slack import detailed_error_slack_message
 

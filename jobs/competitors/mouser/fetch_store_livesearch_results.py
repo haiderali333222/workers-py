@@ -1,6 +1,5 @@
 from utils.helpers.index import (
     url_insert_bulk,
-    get_page_with_scraperapi_from_url,
 )
 from utils.slack import detailed_error_slack_message
 from .helper import (

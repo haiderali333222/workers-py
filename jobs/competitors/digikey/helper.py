@@ -1,5 +1,6 @@
 import re
 from utils.helpers.index import check_manufacturer_match
+from utils.slack import error_slack_message
 
 
 def extract_manufacturer_from_url(url):
@@ -12,6 +13,7 @@ def extract_manufacturer_from_url(url):
         else:
             return None, False
     except Exception as e:
+        error_slack_message(e, "digikey")
         return None, False
 
 
@@ -33,4 +35,5 @@ def is_manufacturer_match(manufacturers_dict, manufacturer_name):
 
         return is_match
     except Exception as e:
+        error_slack_message(e, "digikey")
         return False

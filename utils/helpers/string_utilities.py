@@ -1,15 +1,12 @@
 # Standard library import
 import re
 from collections import defaultdict
-import re
-from collections import defaultdict
-import pandas as pd
 
 # Third-party library import
 import pandas as pd
 
 # local application import
-from utils.slack import error_slack_message, detailed_error_slack_message
+from utils.slack import error_slack_message
 
 
 def preprocess_manufacturers():

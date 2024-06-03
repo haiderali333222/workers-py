@@ -1,6 +1,5 @@
 import requests
-from config.index import SLACK_HEADER, IS_LOCAL
-import requests
+from config.index import SLACK_HEADER
 import json
 
 
