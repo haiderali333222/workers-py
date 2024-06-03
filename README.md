@@ -1,30 +1,125 @@
-# FastApi-Celery-Redis
+# Competitor URL Scraping API Documentation
 
-Example of implementations a simple FastApi app with Celery tasks 
+## Project Overview
 
-## Endpoints
+This project is a FastAPI-based web service designed to scrape competitor URLs. It utilizes Celery for task management and Redis as the message broker. The API enqueues URL fetch tasks for specified competitors and monitors the status of these tasks. Additionally, the system integrates with Slack for notification purposes.
 
-- `/`: Hello world endpoint
-- `/upload_files`: Upload files endpoint
+## Requirements
 
-## Celery tasks
+Below is a list of the main dependencies and their versions required to run this project:
 
-1. `task that handles the upload of files`
-2. `task that starts periodically and sends a message to the broker every 10 seconds`
+- Python 3.8+
+- Redis server
+- Slack Webhook URL for notifications
+- MongoDB
 
+## How to Run
 
-## Project structure
-- `controllers/*`: Contains the FastApi logic for each endpoint
-- `views/*`: Contains the FastApi endpoints
-- `data/*`: Contains the test data files
-- `celery_worker.py`: Contains the Celery tasks
-- `main.py`: Contains the FastApi app entrypoint
-- `requirements.txt`: Contains the Python dependencies
+### Prerequisites
 
-## How to run the project
+- Python 3.8+
+- Redis server
+- Slack Webhook URL for notifications
+- MongoDB
 
-1. Clone the repository
-2. Install all libraries using pip install -r requirements.txt
-3. python ./main.py
-4. Open http://0.0.0.0:8888/docs in your browser to see the Swagger UI
-5. Open http://0.0.0.0:5556/ in your browser to see the Flower UI
+### Setup
+
+1. **Clone the Repository**
+
+   ```sh
+   git clone <repository_url>
+   cd <repository_name>
+   ```
+
+2. **Install Dependencies**
+
+   ```sh
+   pip install -r requirements.txt
+   ```
+
+3. **Start Redis Server**
+
+   ```sh
+    redis-server --daemonize yes
+   ```
+
+4. **Start MongoDB Server**
+
+   ```sh
+    sudo systemctl start mongod
+   ```
+
+5. **Set Environment Variables**
+
+   Create a `.env` file in the root directory of the project and add the following environment variables:
+
+   ```sh
+   REDIS_URL=redis://localhost:6379/0
+   SLACK_WEBHOOK_URL=<slack_webhook_url>
+   MONGO_URI=<mongo_uri>
+
+   ...additional environment variables...
+   ```
+
+6. **Run the Application**
+
+   ```sh
+    python3 main.py
+   ```
+
+7. **Access the API**
+
+   The API will be accessible at `http://localhost:8000`.
+
+## API Documentation
+
+The API documentation can be accessed at `http://localhost:8000/docs`.
+
+### Endpoints
+
+#### 1. Enqueue URL Fetch Task
+
+- **URL**: `/enqueue`
+- **Method**: `POST`
+- **Request Body**:
+
+  ```json
+  {
+    "competitors": ["competitor1", "competitor2"]
+  }
+  ```
+
+- **Response**:
+
+  ```json
+  {
+    "task_ids": {
+      "competitor1": "task_id_1",
+      "competitor2": "task_id_2"
+    },
+    "message": "URL Fetch tasks for [competitor1, competitor2] have been enqueued",
+    "non_existent_competitors": []
+  }
+  ```
+
+#### 2. Get Task Status
+
+- **URL**: `/status/{task_id}`
+- **Method**: `GET`
+- **Response**:
+
+  ```json
+  {
+    "task_id": "task_id_1",
+    "status": "SUCCESS",
+    "result": "Task result data"
+  }
+  ```
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+```
+### Output[]: # Path: README.md
+```

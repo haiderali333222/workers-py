@@ -1,4 +1,3 @@
-import traceback
 from services.celery.celery_app import celery_app
 
 from jobs.mapping.mapping_for_urls import COMPETITOR_MAPPING

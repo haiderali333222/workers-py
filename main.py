@@ -29,10 +29,10 @@ if __name__ == "__main__":
         "--app",
         "services.celery.celery_app",
         "worker",
-        "--concurrency=1",
+        "--concurrency=auto",
         "-Q",
         "celery_queue_for_scrape_competitor_urls",
-        "--pool=solo",
+        "--pool=gevent",
     ]
 
     celery_worker_process_fetch = subprocess.Popen(celery_worker_cmd_fetch)
