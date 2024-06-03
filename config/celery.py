@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 # Broker URL
-CELERY_BROKER_URL = os.getenv("CELERY_BROKER_URL")
+CELERY_BROKER_URL = os.getenv("REDIS_URL")
 # Configure Celery
 broker_url = CELERY_BROKER_URL
 broker_transport_options = {"visibility_timeout": 3600}  # 1 hour.
