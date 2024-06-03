@@ -14,6 +14,8 @@ def slack(slackMessageBody):
     }
 
     try:
-        requests.post(SLACK_HEADER, headers=headers, data=json.dumps(slackMessageBody))
+        requests.post(
+            SLACK_HEADER, headers=headers, data=json.dumps(slackMessageBody)
+        )
     except Exception as error:
         print(error)

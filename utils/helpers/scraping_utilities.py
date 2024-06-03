@@ -23,7 +23,10 @@ session = requests.Session()
 def get_proxies():
     try:
         software_names = [SoftwareName.CHROME.value]
-        operating_systems = [OperatingSystem.WINDOWS.value, OperatingSystem.LINUX.value]
+        operating_systems = [
+            OperatingSystem.WINDOWS.value,
+            OperatingSystem.LINUX.value,
+        ]
         user_agent_rotator = UserAgent(
             software_names=software_names,
             operating_systems=operating_systems,
@@ -41,9 +44,7 @@ def get_proxies():
         urls = url_content.split("\n")
         random_url = random.choice(urls)
         random_url = random_url.split(":")
-        proxy_url = (
-            f"http://{random_url[2]}:{random_url[3]}@{random_url[0]}:{random_url[1]}"
-        )
+        proxy_url = f"http://{random_url[2]}:{random_url[3]}@{random_url[0]}:{random_url[1]}"
         proxies = {"http": proxy_url, "https": proxy_url}
         return proxies, headers
     except Exception as e:
@@ -51,16 +52,22 @@ def get_proxies():
         return {}, {}
 
 
-def request_with_retry(method, url, proxies={}, headers={}, retries=3, **kwargs):
+def request_with_retry(
+    method, url, proxies={}, headers={}, retries=3, **kwargs
+):
     try:
         okay = False
         retry_after = 1
         response = None
         while not okay and retries:
             if method == "get":
-                response = session.get(url, proxies=proxies, headers=headers, **kwargs)
+                response = session.get(
+                    url, proxies=proxies, headers=headers, **kwargs
+                )
             elif method == "post":
-                response = session.post(url, proxies=proxies, headers=headers, **kwargs)
+                response = session.post(
+                    url, proxies=proxies, headers=headers, **kwargs
+                )
             okay = response.status_code == 200
             if not okay:
                 sleep(retry_after)
@@ -72,10 +79,17 @@ def request_with_retry(method, url, proxies={}, headers={}, retries=3, **kwargs)
 
 
 def download_gz_file(
-    competitor_name, url, count, ultra_premium=False, premium=False, render=False
+    competitor_name,
+    url,
+    count,
+    ultra_premium=False,
+    premium=False,
+    render=False,
 ):
     try:
-        scrape_api = f"https://api.scraperapi.com/?api_key={API_KEY_SCRAPY}&url={url}"
+        scrape_api = (
+            f"https://api.scraperapi.com/?api_key={API_KEY_SCRAPY}&url={url}"
+        )
 
         if ultra_premium:
             scrape_api = f"{scrape_api}&ultra_premium=true"
@@ -119,7 +133,9 @@ def get_sitemap_urls(url_to_parse, competitor):
         if page.status_code != 200:
             message = f"Error: {competitor} {page.text}"
             error_slack_message(message, "error")
-        sitemap_index = BeautifulSoup(page.content, "xml")  # Use XML parser explicitly
+        sitemap_index = BeautifulSoup(
+            page.content, "xml"
+        )  # Use XML parser explicitly
         found_urls = [element.text for element in sitemap_index.findAll("loc")]
 
         print(f"Total URLs: {len(found_urls)} for {url_to_parse}")
@@ -134,7 +150,9 @@ def get_page_with_scraperapi_from_url(
     url, competitor, is_premium=False, is_ultra_premium=False, is_render=False
 ):
     try:
-        scrape_api = f"https://api.scraperapi.com/?api_key={API_KEY_SCRAPY}&url={url}"
+        scrape_api = (
+            f"https://api.scraperapi.com/?api_key={API_KEY_SCRAPY}&url={url}"
+        )
 
         if is_ultra_premium:
             scrape_api = f"{scrape_api}&ultra_premium=true"
@@ -170,7 +188,11 @@ def get_page_from_url(url, competitor, stream=False, verify=True):
         page = None
         try:
             page = requests.get(
-                url, proxies=proxies, headers=headers, stream=stream, verify=verify
+                url,
+                proxies=proxies,
+                headers=headers,
+                stream=stream,
+                verify=verify,
             )
         except Exception as e:
             error_slack_message(e)

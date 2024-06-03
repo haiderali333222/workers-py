@@ -19,7 +19,11 @@ def send_slack_message(
 
     slackMessageBody = {
         "attachments": [
-            {"title": title, "text": message, "color": switcher.get(type, color)}
+            {
+                "title": title,
+                "text": message,
+                "color": switcher.get(type, color),
+            }
         ]
     }
 

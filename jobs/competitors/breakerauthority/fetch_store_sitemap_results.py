@@ -18,7 +18,9 @@ def get_and_store_breakerauthority_urls():
             message = f"Error:  {COMPETITOR} {page.text}"
             send_slack_message(message, "error")
         sitemap_index = BeautifulSoup(page.content, "html.parser")
-        sitemap_url = [element.text for element in sitemap_index.findAll("loc")]
+        sitemap_url = [
+            element.text for element in sitemap_index.findAll("loc")
+        ]
         outputs = []
         for data in sitemap_url:
             if "/product-s" in data:

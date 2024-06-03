@@ -54,7 +54,9 @@ def get_manufacturer_page_links():
                                     if is_manufacturer_match(
                                         manufacturers_dict, manf_name
                                     ):
-                                        matched_manufacturer_link = f"{href}?limit=99"
+                                        matched_manufacturer_link = (
+                                            f"{href}?limit=99"
+                                        )
                                         manufacturer_page_links.append(
                                             matched_manufacturer_link
                                         )

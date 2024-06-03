@@ -24,7 +24,9 @@ def preprocess_manufacturers():
     return manufacturers_dict
 
 
-def check_is_whole_word(word, text):  # sourcery skip: use-fstring-for-formatting
+def check_is_whole_word(
+    word, text
+):  # sourcery skip: use-fstring-for-formatting
     try:
         pattern = r"\b{}\b".format(re.escape(word))
         return bool(re.search(pattern, text))
@@ -99,8 +101,12 @@ def clean_string(string, remove_company_status=False):
 
 
 def check_manufacturer_match(manufacturers_dict, product_title):
-    clean_product_title = clean_string(product_title, remove_company_status=True)
-    product_words = {word for word in clean_product_title.split() if len(word) >= 2}
+    clean_product_title = clean_string(
+        product_title, remove_company_status=True
+    )
+    product_words = {
+        word for word in clean_product_title.split() if len(word) >= 2
+    }
 
     return any(
         manufacturer_words.intersection(product_words)

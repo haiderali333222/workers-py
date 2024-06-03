@@ -25,7 +25,9 @@ def is_manufacturer_match(manufacturers_dict, manufacturer_name):
         if is_calculated is not None:
             return is_calculated
 
-        is_match = check_manufacturer_match(manufacturers_dict, manufacturer_name)
+        is_match = check_manufacturer_match(
+            manufacturers_dict, manufacturer_name
+        )
 
         manufacturers_match_status[manufacturer_name] = is_match
 

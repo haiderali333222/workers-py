@@ -16,7 +16,6 @@ def get_and_store_shingle_urls():
     outputs = []
     count = 0
     try:
-
         df = pd.read_csv("data/manufacturers_amplify.csv")
         manufacturers = df["Manufacturer"].unique()
 
@@ -28,9 +27,10 @@ def get_and_store_shingle_urls():
 
         print(f"started fetching urls: {len(urls)}")
         for url in urls:
-            first_page_outputs, next_pages = fetch_and_store_all_search_results(
-                url, is_first_page=True
-            )
+            (
+                first_page_outputs,
+                next_pages,
+            ) = fetch_and_store_all_search_results(url, is_first_page=True)
 
             print(
                 f"first_page_outputs: {len(first_page_outputs)} next_pages: {len(next_pages)} for url: {url}"
@@ -41,9 +41,10 @@ def get_and_store_shingle_urls():
             if next_pages:
                 for next_page in next_pages:
                     try:
-                        next_page_outputs, _ = fetch_and_store_all_search_results(
-                            next_page
-                        )
+                        (
+                            next_page_outputs,
+                            _,
+                        ) = fetch_and_store_all_search_results(next_page)
 
                         print(
                             f"next_page_outputs: {len(next_page_outputs)} for next_page: {next_page}"

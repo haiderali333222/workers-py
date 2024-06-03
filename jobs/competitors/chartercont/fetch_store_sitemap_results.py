@@ -11,7 +11,11 @@ def get_and_store_chartercontact_urls():
         outputs = []
         urls = get_sitemap_urls(URL, COMPETITOR)
         for i in urls:
-            result = {"competitor": COMPETITOR, "url": i, "scraper_type": "sitemap"}
+            result = {
+                "competitor": COMPETITOR,
+                "url": i,
+                "scraper_type": "sitemap",
+            }
             outputs.append(result)
             if len(outputs) == MAX_COUNT:
                 url_insert_bulk(outputs)

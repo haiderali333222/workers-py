@@ -27,7 +27,9 @@ def get_categories_id(manf):
         "categoryId": "0",
     }
     try:
-        response = requests.post(url, headers=headers, data=data, proxies=proxies)
+        response = requests.post(
+            url, headers=headers, data=data, proxies=proxies
+        )
         return response.json()
     except ValueError:
         detailed_error_slack_message(ValueError, COMPETITOR)
@@ -57,7 +59,9 @@ def get_Item_names(manf, id):
         "categoryId": id,
     }
     try:
-        response = requests.post(url, headers=headers, data=data, proxies=proxies)
+        response = requests.post(
+            url, headers=headers, data=data, proxies=proxies
+        )
         return response.json()
     except ValueError:
         detailed_error_slack_message(ValueError, COMPETITOR)

@@ -1,4 +1,8 @@
-from utils.helpers.index import clean_string, check_is_whole_word, get_page_from_url
+from utils.helpers.index import (
+    clean_string,
+    check_is_whole_word,
+    get_page_from_url,
+)
 from utils.slack import detailed_error_slack_message
 
 COMPETITOR = "shingle"
@@ -131,7 +135,6 @@ def fetch_and_store_all_search_results(url, is_first_page=False):
             if links_wrapper := page.find("div", class_="CurrentPage"):
                 links = links_wrapper.find_all("a", class_="page-link")
                 for link in links:
-
                     if link["href"] == "#":
                         continue
 

@@ -13,7 +13,11 @@ def get_and_store_scheiderElectric_urls():
         for data in sitemap_url:
             sitemap_url_data = get_sitemap_urls(data, COMPETITOR)
             for i in sitemap_url_data:
-                result = {"competitor": COMPETITOR, "url": i, "scraper_type": "sitemap"}
+                result = {
+                    "competitor": COMPETITOR,
+                    "url": i,
+                    "scraper_type": "sitemap",
+                }
                 outputs.append(result)
                 if len(outputs) == MAX_COUNT:
                     url_insert_bulk(outputs)

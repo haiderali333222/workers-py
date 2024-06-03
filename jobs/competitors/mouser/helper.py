@@ -44,11 +44,15 @@ def get_manufacturer_page_links():
                             href = a["href"]
 
                             if href and "/manufacturer" in href:
-                                if manf_name := href.replace("/manufacturer/", ""):
+                                if manf_name := href.replace(
+                                    "/manufacturer/", ""
+                                ):
                                     if is_manufacturer_match(
                                         manufacturers_dict, manf_name
                                     ):
-                                        matched_manufacturer_link = f"{BASE_URL}{href}"
+                                        matched_manufacturer_link = (
+                                            f"{BASE_URL}{href}"
+                                        )
 
                                         manufacturer_page_links.append(
                                             matched_manufacturer_link
@@ -66,7 +70,9 @@ def get_product_links_from_plp(plp_link):
         if plp_page := get_page_with_scraperapi_from_url(
             plp_link, COMPETITOR, is_ultra_premium=True
         ):
-            if product_link_tags := plp_page.find_all("div", class_="mfr-part-num"):
+            if product_link_tags := plp_page.find_all(
+                "div", class_="mfr-part-num"
+            ):
                 for product_link_tag in product_link_tags:
                     if a := product_link_tag.find("a"):
                         product_links.append(f"{BASE_URL}{a['href']}")
@@ -74,7 +80,9 @@ def get_product_links_from_plp(plp_link):
             if next_page_tag := plp_page.find("a", id="lnkPager_lnkNext"):
                 if next_page_link_href := next_page_tag["href"]:
                     if BASE_URL not in next_page_link_href:
-                        next_page_link_href = f"{BASE_URL}{next_page_link_href}"
+                        next_page_link_href = (
+                            f"{BASE_URL}{next_page_link_href}"
+                        )
 
                     next_page_link = next_page_link_href.strip()
 

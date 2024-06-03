@@ -38,7 +38,9 @@ def is_manufacturer_match(manufacturers_dict, manufacturer_name):
         clean_product_title = clean_string(
             manufacturer_name, remove_company_status=True
         )
-        product_words = {word for word in clean_product_title.split() if len(word) >= 2}
+        product_words = {
+            word for word in clean_product_title.split() if len(word) >= 2
+        }
 
         is_match = any(
             manufacturer_words.intersection(product_words)

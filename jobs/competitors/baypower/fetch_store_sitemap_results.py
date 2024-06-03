@@ -11,7 +11,11 @@ def get_and_store_baypower_urls():
         sitemap_urls = get_sitemap_urls(URL, COMPETITOR)
         print(f"Total URLs: {len(sitemap_urls)}")
         for data in sitemap_urls:
-            result = {"competitor": COMPETITOR, "url": data, "scraper_type": "sitemap"}
+            result = {
+                "competitor": COMPETITOR,
+                "url": data,
+                "scraper_type": "sitemap",
+            }
             outputs.append(result)
             if len(outputs) == 5000:
                 url_insert_bulk(outputs)

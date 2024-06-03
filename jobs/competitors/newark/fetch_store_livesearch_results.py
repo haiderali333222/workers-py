@@ -26,10 +26,14 @@ def get_products_urls_and_store(product_list_page_link):
 
         for next_page in next_pages:
             try:
-                next_page_product_links, _ = get_product_links_from_plp(next_page)
+                next_page_product_links, _ = get_product_links_from_plp(
+                    next_page
+                )
 
                 if next_page_product_links:
-                    found_links = add_product_links_to_outputs(next_page_product_links)
+                    found_links = add_product_links_to_outputs(
+                        next_page_product_links
+                    )
                     products_links_outputs.extend(found_links)
 
                 if len(products_links_outputs) >= MAX_COUNT:

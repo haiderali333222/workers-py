@@ -20,7 +20,9 @@ def store_data(url, manufacturers_dict):
             if data.startswith("<loc>") and data.endswith("</loc>"):
                 data = data.replace("<loc>", "")
                 if url_data := data.replace("</loc>", ""):
-                    if manufacturer := url_data.replace("https://www.zoro.com/", ""):
+                    if manufacturer := url_data.replace(
+                        "https://www.zoro.com/", ""
+                    ):
                         manufacturer_arr = manufacturer.split("-")
                         manufacturer = " ".join(manufacturer_arr[:4])
 

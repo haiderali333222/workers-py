@@ -26,7 +26,9 @@ async def enqueue_competitors_url_fetch_request(request: FetchUrlsRequest):
         )
 
     non_existent_competitors = [
-        competitor for competitor in competitors if competitor not in COMPETITOR_MAPPING
+        competitor
+        for competitor in competitors
+        if competitor not in COMPETITOR_MAPPING
     ]
 
     competitors = [

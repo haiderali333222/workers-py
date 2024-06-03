@@ -11,7 +11,11 @@ def get_and_store_imcdirect_urls():
         outputs = []
         sitemap_url = get_sitemap_urls(URL, COMPETITOR)
         for data in sitemap_url:
-            result = {"competitor": COMPETITOR, "url": data, "scraper_type": "sitemap"}
+            result = {
+                "competitor": COMPETITOR,
+                "url": data,
+                "scraper_type": "sitemap",
+            }
             outputs.append(result)
             if len(outputs) == MAX_COUNT:
                 url_insert_bulk(outputs)

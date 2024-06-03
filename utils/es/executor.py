@@ -58,7 +58,9 @@ def extract_urls_from_es(query, skip_limit_start, skip_limit_end):
 
     try:
         while True:
-            send_slack_message(f"Fetched URLS from Elasticsearch: {skip_limit_start}")
+            send_slack_message(
+                f"Fetched URLS from Elasticsearch: {skip_limit_start}"
+            )
             print("Fetched URLS from Elasticsearch: ", skip_limit_start)
             response = es.search(
                 index="products_1.0",

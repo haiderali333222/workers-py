@@ -29,7 +29,9 @@ def get_and_store_digikey_urls():
             next_sitemap_urls = get_sitemap_urls(next_sitemap_url, COMPETITOR)
 
             for next_url in next_sitemap_urls:
-                manufacturer, is_valid = extract_manufacturer_from_url(next_url)
+                manufacturer, is_valid = extract_manufacturer_from_url(
+                    next_url
+                )
                 if (
                     is_valid
                     and manufacturer

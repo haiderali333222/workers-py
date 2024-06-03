@@ -11,7 +11,11 @@ def get_and_store_circuitbreakerwarehouse_urls():
         outputs = []
         sitemap_urls = get_sitemap_urls(URL, COMPETITOR)
         for url in sitemap_urls:
-            result = {"competitor": COMPETITOR, "url": url, "scraper_type": "sitemap"}
+            result = {
+                "competitor": COMPETITOR,
+                "url": url,
+                "scraper_type": "sitemap",
+            }
             outputs.append(result)
             if len(outputs) == MAX_COUNT:
                 url_insert_bulk(outputs)

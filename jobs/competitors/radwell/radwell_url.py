@@ -2,7 +2,11 @@ import traceback
 import concurrent.futures
 from bs4 import BeautifulSoup
 
-from utils.helpers.index import request_with_retry, get_proxies, url_insert_bulk
+from utils.helpers.index import (
+    request_with_retry,
+    get_proxies,
+    url_insert_bulk,
+)
 from utils.es.executor import total_count, extracted_name
 from utils.slack import send_slack_message
 
@@ -60,7 +64,9 @@ def creating_url(name):
     try:
         url_formed = url
         url_formed += (
-            "/en-GB/Search?PartNumber=" + name + "&SearchMethod=starts&PageSize=5"
+            "/en-GB/Search?PartNumber="
+            + name
+            + "&SearchMethod=starts&PageSize=5"
         )
         store_radwell(url_formed)
     except Exception as e:

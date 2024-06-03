@@ -1,4 +1,8 @@
-from utils.helpers.index import url_insert_bulk, remove_outdated_urls, get_sitemap_urls
+from utils.helpers.index import (
+    url_insert_bulk,
+    remove_outdated_urls,
+    get_sitemap_urls,
+)
 from utils.slack import detailed_error_slack_message
 
 COMPETITOR = "sigmasurplus"

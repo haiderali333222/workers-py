@@ -16,7 +16,11 @@ def store_data(url):
             data = data.replace("<loc>", "")
             data = data.replace("</loc>", "")
             if "/product" in data:
-                result = {"competitor": "kele", "url": data, "scraper_type": "sitemap"}
+                result = {
+                    "competitor": "kele",
+                    "url": data,
+                    "scraper_type": "sitemap",
+                }
                 outputs.append(result)
                 if len(outputs) == MAX_COUNT:
                     url_insert_bulk(outputs)

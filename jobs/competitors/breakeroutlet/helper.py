@@ -31,7 +31,9 @@ def store_breakerout(url_formed):
         message = f"Error:  {COMPETITOR} {response.text}"
         send_slack_message(message, "error")
     soup = BeautifulSoup(response.content, "html5lib")
-    products_details = soup.find("div", attrs={"id": "product-listing-container"})
+    products_details = soup.find(
+        "div", attrs={"id": "product-listing-container"}
+    )
     products_details_info = products_details.find(
         "form", attrs={"class": "both-grid-default"}
     )

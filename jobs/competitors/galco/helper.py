@@ -36,8 +36,12 @@ def get_manufacturer_page_links():
     manufacturer_page_links = []
     try:
         manufacturers_dict = preprocess_manufacturers()
-        if manufacturer_page := get_page_from_url(MANUFACTURERS_URL, COMPETITOR):
-            mfr_groups = manufacturer_page.find_all("li", class_="ambrands-brand-item")
+        if manufacturer_page := get_page_from_url(
+            MANUFACTURERS_URL, COMPETITOR
+        ):
+            mfr_groups = manufacturer_page.find_all(
+                "li", class_="ambrands-brand-item"
+            )
 
             for mfr_group in mfr_groups:
                 if a := mfr_group.find("a"):
@@ -45,10 +49,10 @@ def get_manufacturer_page_links():
 
                     if href and "/manufacturer" in href:
                         if manf_name := href.replace("/manufacturer/", ""):
-                            if is_manufacturer_match(manufacturers_dict, manf_name):
-                                matched_manufacturer_link = (
-                                    f"{BASE_URL}{href}?product_list_limit={PAGE_LIMIT}"
-                                )
+                            if is_manufacturer_match(
+                                manufacturers_dict, manf_name
+                            ):
+                                matched_manufacturer_link = f"{BASE_URL}{href}?product_list_limit={PAGE_LIMIT}"
 
                                 manufacturer_page_links.append(
                                     matched_manufacturer_link
@@ -65,7 +69,9 @@ def get_product_links_from_plp(plp_link, is_first_page=False):
     try:
         plp_page = get_page_from_url(plp_link, COMPETITOR)
 
-        if product_link_tags := plp_page.find_all("a", class_="product-item-link"):
+        if product_link_tags := plp_page.find_all(
+            "a", class_="product-item-link"
+        ):
             for product_link_tag in product_link_tags:
                 if "href" in product_link_tag.attrs:
                     product_href = product_link_tag["href"]
@@ -101,10 +107,14 @@ def get_products_urls_and_store(product_list_page_link):
 
         for next_page in next_pages:
             try:
-                next_page_product_links, _ = get_product_links_from_plp(next_page)
+                next_page_product_links, _ = get_product_links_from_plp(
+                    next_page
+                )
 
                 if next_page_product_links:
-                    found_links = add_product_links_to_outputs(next_page_product_links)
+                    found_links = add_product_links_to_outputs(
+                        next_page_product_links
+                    )
                     products_links_outputs.extend(found_links)
 
                 if len(products_links_outputs) >= MAX_COUNT:

@@ -16,7 +16,10 @@ def get_and_store_swgr_urls():
             website_urls = get_sitemap_urls(sitemap_url, COMPETITOR)
             print(f"Found {len(website_urls)} urls in {sitemap_url}")
             for website_url in website_urls:
-                if "/product" in website_url and "/circuit-breakers" in website_url:
+                if (
+                    "/product" in website_url
+                    and "/circuit-breakers" in website_url
+                ):
                     result = {
                         "competitor": COMPETITOR,
                         "url": website_url,

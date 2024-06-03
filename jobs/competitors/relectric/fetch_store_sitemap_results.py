@@ -13,7 +13,11 @@ def get_and_store_relectric_urls():
             output_result = get_sitemap_urls(data, COMPETITOR)
             outputs = []
             for i in output_result:
-                result = {"competitor": COMPETITOR, "url": i, "scraper_type": "sitemap"}
+                result = {
+                    "competitor": COMPETITOR,
+                    "url": i,
+                    "scraper_type": "sitemap",
+                }
                 outputs.append(result)
                 if len(outputs) == MAX_COUNT:
                     url_insert_bulk(outputs)

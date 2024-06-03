@@ -12,5 +12,7 @@ broker_connection_retry_on_startup = True
 
 imports = ["workers.scrape_competitor_urls"]
 task_routes = {
-    "scrape_competitor_urls_task": {"queue": "celery_queue_for_scrape_competitor_urls"},
+    "scrape_competitor_urls_task": {
+        "queue": "celery_queue_for_scrape_competitor_urls"
+    },
 }

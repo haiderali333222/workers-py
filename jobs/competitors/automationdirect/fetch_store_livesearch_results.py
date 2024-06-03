@@ -4,7 +4,13 @@ import pandas as pd
 from utils.helpers.index import url_insert_bulk
 from utils.slack import detailed_error_slack_message
 
-from .helper import get_categories_id, get_Item_names, COMPETITOR, URL, MAX_COUNT
+from .helper import (
+    get_categories_id,
+    get_Item_names,
+    COMPETITOR,
+    URL,
+    MAX_COUNT,
+)
 
 
 def get_and_store_automation_direct_urls():
@@ -21,15 +27,21 @@ def get_and_store_automation_direct_urls():
                     continue
                 if categories := pydash.get(result, "categoryStructure", []):
                     for cat in categories:
-                        if subCategories := pydash.get(cat, "subCategories", []):
+                        if subCategories := pydash.get(
+                            cat, "subCategories", []
+                        ):
                             for subcat in subCategories:
                                 if node_id := pydash.get(subcat, "nodeId"):
                                     try:
-                                        if items := get_Item_names(manf, node_id):
+                                        if items := get_Item_names(
+                                            manf, node_id
+                                        ):
                                             if not items:
                                                 continue
                                             results = pydash.get(
-                                                items, "solrResult.response.docs", []
+                                                items,
+                                                "solrResult.response.docs",
+                                                [],
                                             )
 
                                             for docs in results:
@@ -49,7 +61,9 @@ def get_and_store_automation_direct_urls():
                                             url_insert_bulk(outputs)
                                             outputs = []
                                     except Exception as e:
-                                        detailed_error_slack_message(e, COMPETITOR)
+                                        detailed_error_slack_message(
+                                            e, COMPETITOR
+                                        )
                                         continue
             except Exception as e:
                 detailed_error_slack_message(e, COMPETITOR)

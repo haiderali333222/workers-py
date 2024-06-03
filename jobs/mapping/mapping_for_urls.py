@@ -38,7 +38,9 @@ from jobs.competitors.imc_direct.fetch_store_sitemap_results import (
 from jobs.competitors.iesupply.fetch_store_sitemap_results import (
     get_and_store_iesupplyy_urls,
 )
-from jobs.competitors.kele.fetch_store_sitemap_results import get_and_store_kele_urls
+from jobs.competitors.kele.fetch_store_sitemap_results import (
+    get_and_store_kele_urls,
+)
 from jobs.competitors.radwell.fetch_store_sitemap_results import (
     get_and_store_radwell_urls,
 )
@@ -57,7 +59,9 @@ from jobs.competitors.digikey.fetch_store_sitemap_results import (
 from jobs.competitors.masterelectronics.fetch_store_sitemap_results import (
     get_and_store_master_electronics_urls,
 )
-from jobs.competitors.mc_mc.fetch_store_sitemap_results import get_and_store_mc_mc_urls
+from jobs.competitors.mc_mc.fetch_store_sitemap_results import (
+    get_and_store_mc_mc_urls,
+)
 from jobs.competitors.plchardware.fetch_store_sitemap_results import (
     get_and_store_plchardware_urls,
 )
@@ -67,15 +71,21 @@ from jobs.competitors.sigmasurplus.fetch_store_sitemap_results import (
 from jobs.competitors.classicautomation.fetch_store_sitemap_results import (
     get_and_store_classic_automation_urls,
 )
-from jobs.competitors.zoro.fetch_store_sitemap_results import get_and_store_zoro_urls
+from jobs.competitors.zoro.fetch_store_sitemap_results import (
+    get_and_store_zoro_urls,
+)
 from jobs.competitors.walkerindustrial.fetch_store_sitemap_results import (
     get_and_store_walker_industrial_urls,
 )
 from jobs.competitors.unisgroup.fetch_store_sitemap_results import (
     get_and_store_unisgroup_urls,
 )
-from jobs.competitors.rs.fetch_store_sitemap_results import get_and_store_rs_urls
-from jobs.competitors.swgr.fetch_store_sitemap_results import get_and_store_swgr_urls
+from jobs.competitors.rs.fetch_store_sitemap_results import (
+    get_and_store_rs_urls,
+)
+from jobs.competitors.swgr.fetch_store_sitemap_results import (
+    get_and_store_swgr_urls,
+)
 from jobs.competitors.super_breaker.fetch_store_sitemap_results import (
     get_and_store_superbreakers_urls,
 )
