@@ -78,6 +78,15 @@ Below is a list of the main dependencies and their versions required to run this
 
    The API will be accessible at `http://localhost:8000`.
 
+8. **Recommended**:
+   1. Install Extensions:
+      1. [Python](https://marketplace.visualstudio.com/items?itemName=ms-python.python)
+      2. [Black](https://marketplace.visualstudio.com/items?itemName=ms-python.black-formatter)
+   2. Setup pre-commit hooks:
+      ```sh
+      pre-commit install
+      ```
+
 ## API Documentation
 
 The API documentation can be accessed at `http://localhost:8000/docs`.
