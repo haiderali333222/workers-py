@@ -95,7 +95,7 @@ The API documentation can be accessed at `http://localhost:8000/docs`.
 
 #### 1. Enqueue URL Fetch Task
 
-- **URL**: `/enqueue`
+- **URL**: `/get-urls`
 - **Method**: `POST`
 - **Request Body**:
 
