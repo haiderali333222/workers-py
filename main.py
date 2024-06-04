@@ -34,8 +34,8 @@ if __name__ == "__main__":
         "worker",
         "--concurrency=2",
         "-Q",
-        "celery_queue_for_scrape_competitor_urls",
-        "--pool=gevent",
+        "celery_queue_for_scrape_competitor_urls,celery_queue_for_send_scrapper_status",
+        "--pool=solo",
     ]
 
     celery_worker_process_fetch = subprocess.Popen(celery_worker_cmd_fetch)
