@@ -1,7 +1,6 @@
 from services.celery.celery_app import celery_app
-
 from utils.scrape_urls.mapping.mapping_for_urls import COMPETITOR_MAPPING
-from utils.slack import send_slack_message, error_slack_message
+from utils.slack import error_slack_message, send_slack_message
 
 
 @celery_app.task(name="scrape_competitor_urls_task")

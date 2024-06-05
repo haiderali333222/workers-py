@@ -1,15 +1,11 @@
-import traceback
 import concurrent.futures
+import traceback
+
 from bs4 import BeautifulSoup
 
-from utils.helpers.index import (
-    request_with_retry,
-    get_proxies,
-    url_insert_bulk,
-)
-from utils.es.executor import total_count, extracted_name
+from utils.es.executor import extracted_name, total_count
+from utils.helpers.index import get_proxies, request_with_retry, url_insert_bulk
 from utils.slack import send_slack_message
-
 
 count = 0
 url = "https://www.radwell.co.uk"
@@ -30,9 +26,7 @@ def radwell_url():
 def store_radwell(url_formed):
     outputs = []
     proxies, headers = get_proxies()
-    response = request_with_retry(
-        "get", url_formed, "radwell", proxies=proxies, headers=headers
-    )
+    response = request_with_retry("get", url_formed, "radwell", proxies=proxies, headers=headers)
 
     if response.status_code != 200:
         message = "Error: radwell " + response.text
@@ -42,9 +36,7 @@ def store_radwell(url_formed):
     products_details = soup.find("div", attrs={"id": "searchResults"})
     if products_details is None:
         return
-    products_details_info = products_details.find_all(
-        "div", attrs={"class": "searchResult clickable"}
-    )
+    products_details_info = products_details.find_all("div", attrs={"class": "searchResult clickable"})
     for a in products_details_info:
         data = a.find("a")["href"]
         data = url + data
@@ -63,11 +55,7 @@ def store_radwell(url_formed):
 def creating_url(name):
     try:
         url_formed = url
-        url_formed += (
-            "/en-GB/Search?PartNumber="
-            + name
-            + "&SearchMethod=starts&PageSize=5"
-        )
+        url_formed += "/en-GB/Search?PartNumber=" + name + "&SearchMethod=starts&PageSize=5"
         store_radwell(url_formed)
     except Exception as e:
         message = "Error: " + str(e) + "\n" + traceback.format_exc()

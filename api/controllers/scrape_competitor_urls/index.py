@@ -1,13 +1,13 @@
 import json
-
-from pydantic import BaseModel
 from typing import List, Optional
+
 from celery.result import AsyncResult
 from fastapi.responses import JSONResponse
+from pydantic import BaseModel
 
+from utils.scrape_urls.mapping.mapping_for_urls import COMPETITOR_MAPPING
 from utils.slack import send_slack_message
 from workers.scrape_competitor_urls import scrape_competitor_urls_task
-from utils.scrape_urls.mapping.mapping_for_urls import COMPETITOR_MAPPING
 
 
 class FetchUrlsRequest(BaseModel):

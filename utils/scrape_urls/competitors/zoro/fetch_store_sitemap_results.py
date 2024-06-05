@@ -1,7 +1,7 @@
 from utils.helpers.index import (
     download_gz_file,
-    preprocess_manufacturers,
     get_sitemap_urls,
+    preprocess_manufacturers,
 )
 from utils.slack import detailed_error_slack_message
 

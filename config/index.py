@@ -1,4 +1,5 @@
 import os
+
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -19,13 +20,9 @@ REDIS_PASSWORD = os.getenv("REDIS_PASSWORD")
 REDIS_HOST = os.getenv("REDIS_HOST")
 REDIS_PORT = 6380
 REDIS_DB = 0
-REDIS_URL = (
-    "redis://localhost:6379/0"
-    if IS_LOCAL
-    else f"redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}"
-)
+REDIS_URL = "redis://localhost:6379/0" if IS_LOCAL else f"redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}"
 
 GOOGLE_DRIVE_CREDENTIALS_FILE = "config/google_drive_credentials.json"
 
-WEBDEVEMAIL = 'webdev@electrical.com'
-MAIL_SENDER_SERVER_TOKEN = '428bd180-5f7e-4cd9-94c0-ecde12b6863a'
+WEBDEVEMAIL = "webdev@electrical.com"
+MAIL_SENDER_SERVER_TOKEN = "428bd180-5f7e-4cd9-94c0-ecde12b6863a"

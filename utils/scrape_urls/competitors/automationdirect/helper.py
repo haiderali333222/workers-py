@@ -1,7 +1,7 @@
-from utils.helpers.index import get_proxies
-from utils.slack import send_slack_message, detailed_error_slack_message
-
 import requests
+
+from utils.helpers.index import get_proxies
+from utils.slack import detailed_error_slack_message, send_slack_message
 
 COMPETITOR = "automationdirect"
 URL = "https://www.automationdirect.com/adc/shopping/catalog/"
@@ -27,9 +27,7 @@ def get_categories_id(manf):
         "categoryId": "0",
     }
     try:
-        response = requests.post(
-            url, headers=headers, data=data, proxies=proxies
-        )
+        response = requests.post(url, headers=headers, data=data, proxies=proxies)
         return response.json()
     except ValueError:
         detailed_error_slack_message(ValueError, COMPETITOR)
@@ -59,9 +57,7 @@ def get_Item_names(manf, id):
         "categoryId": id,
     }
     try:
-        response = requests.post(
-            url, headers=headers, data=data, proxies=proxies
-        )
+        response = requests.post(url, headers=headers, data=data, proxies=proxies)
         return response.json()
     except ValueError:
         detailed_error_slack_message(ValueError, COMPETITOR)

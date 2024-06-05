@@ -1,5 +1,7 @@
 import gzip
+
 from bs4 import BeautifulSoup
+
 from utils.helpers.index import url_insert_bulk
 
 MAX_COUNT = 5000

@@ -1,13 +1,14 @@
-from bs4 import BeautifulSoup
-from utils.helpers.index import (
-    clean_string,
-    url_insert_bulk,
-    preprocess_manufacturers,
-    read_gz_file,
-)
-from utils.slack import detailed_error_slack_message
 import re
 
+from bs4 import BeautifulSoup
+
+from utils.helpers.index import (
+    clean_string,
+    preprocess_manufacturers,
+    read_gz_file,
+    url_insert_bulk,
+)
+from utils.slack import detailed_error_slack_message
 
 COMPETITOR = "us.rs-online"
 
@@ -35,17 +36,10 @@ def is_manufacturer_match(manufacturers_dict, manufacturer_name):
         if is_calculated is not None:
             return is_calculated
 
-        clean_product_title = clean_string(
-            manufacturer_name, remove_company_status=True
-        )
-        product_words = {
-            word for word in clean_product_title.split() if len(word) >= 2
-        }
+        clean_product_title = clean_string(manufacturer_name, remove_company_status=True)
+        product_words = {word for word in clean_product_title.split() if len(word) >= 2}
 
-        is_match = any(
-            manufacturer_words.intersection(product_words)
-            for _, manufacturer_words in manufacturers_dict.items()
-        )
+        is_match = any(manufacturer_words.intersection(product_words) for _, manufacturer_words in manufacturers_dict.items())
 
         manufacturers_match_status[manufacturer_name] = is_match
 
@@ -68,11 +62,7 @@ def store_data(url):
                 data = data.replace("<loc>", "")
                 data = data.replace("</loc>", "")
                 manufacturer, is_valid = extract_manufacturer_from_url(data)
-                if (
-                    is_valid
-                    and manufacturer
-                    and is_manufacturer_match(manufacturers_dict, manufacturer)
-                ):
+                if is_valid and manufacturer and is_manufacturer_match(manufacturers_dict, manufacturer):
                     result = {
                         "competitor": "us.rs-online",
                         "url": data,

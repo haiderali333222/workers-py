@@ -1,8 +1,9 @@
 import concurrent.futures
 
-from .helper import creating_url, COMPETITOR
-from utils.es.executor import total_count, extracted_name
+from utils.es.executor import extracted_name, total_count
 from utils.slack import detailed_error_slack_message
+
+from .helper import COMPETITOR, creating_url
 
 
 def get_and_store_coasttocoastbreaker_urls():

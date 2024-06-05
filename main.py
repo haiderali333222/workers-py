@@ -18,9 +18,7 @@ app.include_router(main_router)
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):
     detailed_error_slack_message(exc, message="Internal Server Error")
-    return JSONResponse(
-        status_code=500, content={"message": "Internal Server Error"}
-    )
+    return JSONResponse(status_code=500, content={"message": "Internal Server Error"})
 
 
 if __name__ == "__main__":

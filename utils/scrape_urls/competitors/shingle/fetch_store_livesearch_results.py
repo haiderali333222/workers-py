@@ -4,10 +4,10 @@ from utils.helpers.index import url_insert_bulk
 from utils.slack import detailed_error_slack_message
 
 from .helper import (
+    COMPETITOR,
     MAX_LIMIT,
     fetch_and_store_all_search_results,
     get_manufacturer_url,
-    COMPETITOR,
 )
 
 
@@ -32,9 +32,7 @@ def get_and_store_shingle_urls():
                 next_pages,
             ) = fetch_and_store_all_search_results(url, is_first_page=True)
 
-            print(
-                f"first_page_outputs: {len(first_page_outputs)} next_pages: {len(next_pages)} for url: {url}"
-            )
+            print(f"first_page_outputs: {len(first_page_outputs)} next_pages: {len(next_pages)} for url: {url}")
             if first_page_outputs:
                 outputs.extend(first_page_outputs)
 
@@ -46,9 +44,7 @@ def get_and_store_shingle_urls():
                             _,
                         ) = fetch_and_store_all_search_results(next_page)
 
-                        print(
-                            f"next_page_outputs: {len(next_page_outputs)} for next_page: {next_page}"
-                        )
+                        print(f"next_page_outputs: {len(next_page_outputs)} for next_page: {next_page}")
 
                         if next_page_outputs:
                             outputs.extend(next_page_outputs)

@@ -1,6 +1,7 @@
-from pydantic import BaseModel
 from typing import List, Optional
-from fastapi import FastAPI, APIRouter
+
+from fastapi import APIRouter, FastAPI
+from pydantic import BaseModel
 
 from api.controllers.scrape_competitor_urls.index import (
     enqueue_competitors_url_fetch_request,

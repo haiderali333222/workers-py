@@ -1,14 +1,13 @@
-from utils.helpers.index import (
-    url_insert_bulk,
-)
+from utils.helpers.index import url_insert_bulk
 from utils.slack import detailed_error_slack_message
+
 from .helper import (
     BASE_URL,
     COMPETITOR,
+    MAX_COUNT,
     get_manufacturer_page_links,
     get_page_with_scraperapi_from_url,
     get_product_links_from_plp,
-    MAX_COUNT,
 )
 
 manufacturers_match_status = {}
@@ -18,24 +17,16 @@ def get_manufacturer_products_links(manufacturer_page_link):
     products_links_outputs = []
     count = 0
     try:
-        if manufacture_page := get_page_with_scraperapi_from_url(
-            manufacturer_page_link, COMPETITOR, is_ultra_premium=True
-        ):
-            if all_products_div := manufacture_page.find(
-                "div", class_="all_products"
-            ):
+        if manufacture_page := get_page_with_scraperapi_from_url(manufacturer_page_link, COMPETITOR, is_ultra_premium=True):
+            if all_products_div := manufacture_page.find("div", class_="all_products"):
                 if link_input := all_products_div.find("input"):
                     plp_link = f"{BASE_URL}{link_input['value']}"
                     next_page_exists = True
                     print(f"plp_link: {plp_link}")
 
                     while next_page_exists:
-                        product_links, next_page = get_product_links_from_plp(
-                            plp_link
-                        )
-                        print(
-                            f"product_links: {len(product_links)} next_page: {next_page} count: {count}"
-                        )
+                        product_links, next_page = get_product_links_from_plp(plp_link)
+                        print(f"product_links: {len(product_links)} next_page: {next_page} count: {count}")
 
                         if product_links:
                             for product_link in product_links:

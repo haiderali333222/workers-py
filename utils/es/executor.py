@@ -1,7 +1,7 @@
 import traceback
 
 from services.elastic_search.connection import es
-from utils.es.es_query import search_param, count_query
+from utils.es.es_query import count_query, search_param
 from utils.slack import send_slack_message
 
 
@@ -58,9 +58,7 @@ def extract_urls_from_es(query, skip_limit_start, skip_limit_end):
 
     try:
         while True:
-            send_slack_message(
-                f"Fetched URLS from Elasticsearch: {skip_limit_start}"
-            )
+            send_slack_message(f"Fetched URLS from Elasticsearch: {skip_limit_start}")
             print("Fetched URLS from Elasticsearch: ", skip_limit_start)
             response = es.search(
                 index="products_1.0",
@@ -74,9 +72,7 @@ def extract_urls_from_es(query, skip_limit_start, skip_limit_end):
                 break
             for data in hits:
                 if data.get("_source") and data.get("_source").get("url"):
-                    urls.append(
-                        f"https://www.electrical.com{data.get('_source').get('url')}"
-                    )
+                    urls.append(f"https://www.electrical.com{data.get('_source').get('url')}")
 
             if len(hits) < skip_limit_end:
                 break

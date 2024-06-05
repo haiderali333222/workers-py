@@ -1,8 +1,4 @@
-from utils.helpers.index import (
-    clean_string,
-    check_is_whole_word,
-    get_page_from_url,
-)
+from utils.helpers.index import check_is_whole_word, clean_string, get_page_from_url
 from utils.slack import detailed_error_slack_message
 
 COMPETITOR = "shingle"
@@ -83,9 +79,7 @@ MAX_LIMIT = 5000
 
 def form_url(manufacturer):
     try:
-        found_manufacturer = (
-            manufacturer.strip().replace(" ", "%20").replace(",", "%2C")
-        )
+        found_manufacturer = manufacturer.strip().replace(" ", "%20").replace(",", "%2C")
         return f"https://shingle.com/c?PageSize=50&Manufacturer={found_manufacturer}"
     except Exception as e:
         detailed_error_slack_message(e, COMPETITOR)

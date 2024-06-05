@@ -1,10 +1,11 @@
-from .helper import is_manufacturer_match, is_valid_url_and_manufacturer
 from utils.helpers.index import (
-    url_insert_bulk,
-    preprocess_manufacturers,
     get_sitemap_urls,
+    preprocess_manufacturers,
+    url_insert_bulk,
 )
 from utils.slack import detailed_error_slack_message
+
+from .helper import is_manufacturer_match, is_valid_url_and_manufacturer
 
 COMPETITOR = "onlinecomponents"
 STARTING_URL = "https://www.onlinecomponents.com/sitemaps.xml"
@@ -27,11 +28,7 @@ def get_and_store_online_components_urls():
             for url in website_urls:
                 is_valid, manufacturer = is_valid_url_and_manufacturer(url)
 
-                if (
-                    is_valid
-                    and manufacturer
-                    and is_manufacturer_match(manufacturers_dict, manufacturer)
-                ):
+                if is_valid and manufacturer and is_manufacturer_match(manufacturers_dict, manufacturer):
                     count += 1
                     result = {
                         "competitor": COMPETITOR,

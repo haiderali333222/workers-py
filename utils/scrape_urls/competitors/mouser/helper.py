@@ -1,7 +1,7 @@
 from utils.helpers.index import (
     check_manufacturer_match,
-    preprocess_manufacturers,
     get_page_with_scraperapi_from_url,
+    preprocess_manufacturers,
 )
 from utils.slack import detailed_error_slack_message
 
@@ -32,9 +32,7 @@ def get_manufacturer_page_links():
     manufacturer_page_links = []
     try:
         manufacturers_dict = preprocess_manufacturers()
-        if manufacturer_page := get_page_with_scraperapi_from_url(
-            MANUFACTURERS_URL, COMPETITOR, is_ultra_premium=True
-        ):
+        if manufacturer_page := get_page_with_scraperapi_from_url(MANUFACTURERS_URL, COMPETITOR, is_ultra_premium=True):
             if mfr_list := manufacturer_page.find("div", id="mfr_list"):
                 mfr_groups = mfr_list.find_all("div", class_="mfr_group")
                 for mfr_group in mfr_groups:
@@ -44,19 +42,11 @@ def get_manufacturer_page_links():
                             href = a["href"]
 
                             if href and "/manufacturer" in href:
-                                if manf_name := href.replace(
-                                    "/manufacturer/", ""
-                                ):
-                                    if is_manufacturer_match(
-                                        manufacturers_dict, manf_name
-                                    ):
-                                        matched_manufacturer_link = (
-                                            f"{BASE_URL}{href}"
-                                        )
+                                if manf_name := href.replace("/manufacturer/", ""):
+                                    if is_manufacturer_match(manufacturers_dict, manf_name):
+                                        matched_manufacturer_link = f"{BASE_URL}{href}"
 
-                                        manufacturer_page_links.append(
-                                            matched_manufacturer_link
-                                        )
+                                        manufacturer_page_links.append(matched_manufacturer_link)
     except Exception as e:
         detailed_error_slack_message(e, COMPETITOR)
 
@@ -67,12 +57,8 @@ def get_product_links_from_plp(plp_link):
     product_links = []
     next_page_link = None
     try:
-        if plp_page := get_page_with_scraperapi_from_url(
-            plp_link, COMPETITOR, is_ultra_premium=True
-        ):
-            if product_link_tags := plp_page.find_all(
-                "div", class_="mfr-part-num"
-            ):
+        if plp_page := get_page_with_scraperapi_from_url(plp_link, COMPETITOR, is_ultra_premium=True):
+            if product_link_tags := plp_page.find_all("div", class_="mfr-part-num"):
                 for product_link_tag in product_link_tags:
                     if a := product_link_tag.find("a"):
                         product_links.append(f"{BASE_URL}{a['href']}")
@@ -80,9 +66,7 @@ def get_product_links_from_plp(plp_link):
             if next_page_tag := plp_page.find("a", id="lnkPager_lnkNext"):
                 if next_page_link_href := next_page_tag["href"]:
                     if BASE_URL not in next_page_link_href:
-                        next_page_link_href = (
-                            f"{BASE_URL}{next_page_link_href}"
-                        )
+                        next_page_link_href = f"{BASE_URL}{next_page_link_href}"
 
                     next_page_link = next_page_link_href.strip()
 

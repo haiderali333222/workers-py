@@ -1,8 +1,9 @@
 import concurrent.futures
 
+from utils.es.executor import extracted_name, total_count
 from utils.slack import detailed_error_slack_message
-from utils.es.executor import total_count, extracted_name
-from .helper import creating_url, COMPETITOR
+
+from .helper import COMPETITOR, creating_url
 
 count = 0
 

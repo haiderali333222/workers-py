@@ -1,8 +1,8 @@
 from utils.helpers.index import (
-    get_page_from_url,
-    url_insert_bulk,
     check_manufacturer_match,
+    get_page_from_url,
     preprocess_manufacturers,
+    url_insert_bulk,
 )
 from utils.slack import detailed_error_slack_message
 
@@ -36,12 +36,8 @@ def get_manufacturer_page_links():
     manufacturer_page_links = []
     try:
         manufacturers_dict = preprocess_manufacturers()
-        if manufacturer_page := get_page_from_url(
-            MANUFACTURERS_URL, COMPETITOR
-        ):
-            mfr_groups = manufacturer_page.find_all(
-                "li", class_="ambrands-brand-item"
-            )
+        if manufacturer_page := get_page_from_url(MANUFACTURERS_URL, COMPETITOR):
+            mfr_groups = manufacturer_page.find_all("li", class_="ambrands-brand-item")
 
             for mfr_group in mfr_groups:
                 if a := mfr_group.find("a"):
@@ -49,14 +45,10 @@ def get_manufacturer_page_links():
 
                     if href and "/manufacturer" in href:
                         if manf_name := href.replace("/manufacturer/", ""):
-                            if is_manufacturer_match(
-                                manufacturers_dict, manf_name
-                            ):
+                            if is_manufacturer_match(manufacturers_dict, manf_name):
                                 matched_manufacturer_link = f"{BASE_URL}{href}?product_list_limit={PAGE_LIMIT}"
 
-                                manufacturer_page_links.append(
-                                    matched_manufacturer_link
-                                )
+                                manufacturer_page_links.append(matched_manufacturer_link)
     except Exception as e:
         detailed_error_slack_message(e, COMPETITOR)
     return manufacturer_page_links
@@ -69,9 +61,7 @@ def get_product_links_from_plp(plp_link, is_first_page=False):
     try:
         plp_page = get_page_from_url(plp_link, COMPETITOR)
 
-        if product_link_tags := plp_page.find_all(
-            "a", class_="product-item-link"
-        ):
+        if product_link_tags := plp_page.find_all("a", class_="product-item-link"):
             for product_link_tag in product_link_tags:
                 if "href" in product_link_tag.attrs:
                     product_href = product_link_tag["href"]
@@ -97,9 +87,7 @@ def get_product_links_from_plp(plp_link, is_first_page=False):
 def get_products_urls_and_store(product_list_page_link):
     products_links_outputs = []
     try:
-        product_links, next_pages = get_product_links_from_plp(
-            product_list_page_link, is_first_page=True
-        )
+        product_links, next_pages = get_product_links_from_plp(product_list_page_link, is_first_page=True)
 
         if product_links:
             first_page_links = add_product_links_to_outputs(product_links)
@@ -107,14 +95,10 @@ def get_products_urls_and_store(product_list_page_link):
 
         for next_page in next_pages:
             try:
-                next_page_product_links, _ = get_product_links_from_plp(
-                    next_page
-                )
+                next_page_product_links, _ = get_product_links_from_plp(next_page)
 
                 if next_page_product_links:
-                    found_links = add_product_links_to_outputs(
-                        next_page_product_links
-                    )
+                    found_links = add_product_links_to_outputs(next_page_product_links)
                     products_links_outputs.extend(found_links)
 
                 if len(products_links_outputs) >= MAX_COUNT:

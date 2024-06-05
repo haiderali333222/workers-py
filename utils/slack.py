@@ -1,12 +1,12 @@
 import traceback
-from services.slack.slack_message import slack
+
 from config.index import ENVIRONMENT
+from services.slack.slack_message import slack
+
 from .index import get_parent_name
 
 
-def send_slack_message(
-    message, type: str = "info" or "error" or "warning" or "success"
-):
+def send_slack_message(message, type: str = "info" or "error" or "warning" or "success"):
     color = "#439FE0"
 
     switcher = {

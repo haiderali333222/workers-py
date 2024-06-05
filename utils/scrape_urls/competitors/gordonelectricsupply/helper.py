@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 
-from utils.helpers.index import url_insert_bulk, read_gz_file
+from utils.helpers.index import read_gz_file, url_insert_bulk
 from utils.slack import detailed_error_slack_message
 
 MAX_COUNT = 5000

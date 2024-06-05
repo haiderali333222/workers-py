@@ -2,9 +2,9 @@ from utils.helpers.index import url_insert_bulk
 from utils.slack import detailed_error_slack_message
 
 from .helper import (
-    get_manufacturer_page_links,
     COMPETITOR,
     MAX_COUNT,
+    get_manufacturer_page_links,
     get_product_links_from_plp,
 )
 
@@ -17,9 +17,7 @@ def get_products_urls_and_store(product_list_page_link):
     try:
         while is_next_page_available:
             try:
-                product_links, next_page = get_product_links_from_plp(
-                    product_list_page_link
-                )
+                product_links, next_page = get_product_links_from_plp(product_list_page_link)
                 print(
                     "page results: ",
                     len(product_links),

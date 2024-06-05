@@ -1,10 +1,9 @@
 from utils.helpers.index import (
     check_manufacturer_match,
-    preprocess_manufacturers,
     get_page_from_url,
+    preprocess_manufacturers,
 )
 from utils.slack import detailed_error_slack_message
-
 
 COMPETITOR = "wolfautomation"
 MANUFACTURERS_URL = "https://www.wolfautomation.com/brands"
@@ -37,38 +36,22 @@ def get_manufacturer_page_links():
 
     try:
         while url_to_parse_manufacturer:
-            if manufacturer_page := get_page_from_url(
-                url_to_parse_manufacturer, COMPETITOR
-            ):
-                manufacturer_group_wrapper = manufacturer_page.find(
-                    "div", class_="ob-subcategory-carousel"
-                )
-                if manufacturer_groups := manufacturer_group_wrapper.find_all(
-                    "div", class_="subcat-box"
-                ):
+            if manufacturer_page := get_page_from_url(url_to_parse_manufacturer, COMPETITOR):
+                manufacturer_group_wrapper = manufacturer_page.find("div", class_="ob-subcategory-carousel")
+                if manufacturer_groups := manufacturer_group_wrapper.find_all("div", class_="subcat-box"):
                     for manufacturer_group in manufacturer_groups:
                         if a := manufacturer_group.find("a"):
                             href = a["href"]
                             if href and "/brands" in href:
                                 if manf_name := href.split("/brands")[-1]:
-                                    if is_manufacturer_match(
-                                        manufacturers_dict, manf_name
-                                    ):
-                                        matched_manufacturer_link = (
-                                            f"{href}?limit=99"
-                                        )
-                                        manufacturer_page_links.append(
-                                            matched_manufacturer_link
-                                        )
+                                    if is_manufacturer_match(manufacturers_dict, manf_name):
+                                        matched_manufacturer_link = f"{href}?limit=99"
+                                        manufacturer_page_links.append(matched_manufacturer_link)
 
-                if next_page := manufacturer_page.find(
-                    "li", class_="pagination-item pagination-item--next"
-                ):
+                if next_page := manufacturer_page.find("li", class_="pagination-item pagination-item--next"):
                     if a := next_page.find("a"):
                         url = a["href"]
-                        url_to_parse_manufacturer = (
-                            f"{BASE_URL}{url}" if BASE_URL not in url else url
-                        )
+                        url_to_parse_manufacturer = f"{BASE_URL}{url}" if BASE_URL not in url else url
                 else:
                     url_to_parse_manufacturer = None
     except Exception as e:
@@ -94,9 +77,7 @@ def get_product_links_from_plp(plp_link):
                             product_href = product_href.strip()
                         product_links.append(product_href)
 
-        if next_page_tag := plp_page.find(
-            "li", class_="pagination-item pagination-item--next"
-        ):
+        if next_page_tag := plp_page.find("li", class_="pagination-item pagination-item--next"):
             if next_page_tag:
                 if a := next_page_tag.find("a"):
                     if "href" in a.attrs:

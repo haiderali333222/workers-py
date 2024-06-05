@@ -1,10 +1,9 @@
 import requests
 from bs4 import BeautifulSoup
-from utils.helpers.index import url_insert_bulk
-from utils.slack import send_slack_message, detailed_error_slack_message
 
 from config.index import API_KEY_SCRAPY
-
+from utils.helpers.index import url_insert_bulk
+from utils.slack import detailed_error_slack_message, send_slack_message
 
 COMPETITOR = "breakerauthority"
 URL = "https://breakerauthority.com/sitemap.xml"
@@ -18,9 +17,7 @@ def get_and_store_breakerauthority_urls():
             message = f"Error:  {COMPETITOR} {page.text}"
             send_slack_message(message, "error")
         sitemap_index = BeautifulSoup(page.content, "html.parser")
-        sitemap_url = [
-            element.text for element in sitemap_index.findAll("loc")
-        ]
+        sitemap_url = [element.text for element in sitemap_index.findAll("loc")]
         outputs = []
         for data in sitemap_url:
             if "/product-s" in data:

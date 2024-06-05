@@ -1,20 +1,18 @@
 # Standard library import
-import random
 import gzip
+import os
+import random
 from time import sleep
 
 # Third-party library import
 import requests
-from random_user_agent.user_agent import UserAgent
-from random_user_agent.params import SoftwareName, OperatingSystem
 from bs4 import BeautifulSoup
+from random_user_agent.params import OperatingSystem, SoftwareName
+from random_user_agent.user_agent import UserAgent
 
 # local application import
-from config.index import PROXY_CSV_URL
-from utils.slack import send_slack_message
-from config.index import API_KEY_SCRAPY
-from utils.slack import error_slack_message
-import os
+from config.index import API_KEY_SCRAPY, PROXY_CSV_URL
+from utils.slack import error_slack_message, send_slack_message
 
 session = requests.Session()
 
@@ -51,22 +49,16 @@ def get_proxies():
         return {}, {}
 
 
-def request_with_retry(
-    method, url, proxies={}, headers={}, retries=3, **kwargs
-):
+def request_with_retry(method, url, proxies={}, headers={}, retries=3, **kwargs):
     try:
         okay = False
         retry_after = 1
         response = None
         while not okay and retries:
             if method == "get":
-                response = session.get(
-                    url, proxies=proxies, headers=headers, **kwargs
-                )
+                response = session.get(url, proxies=proxies, headers=headers, **kwargs)
             elif method == "post":
-                response = session.post(
-                    url, proxies=proxies, headers=headers, **kwargs
-                )
+                response = session.post(url, proxies=proxies, headers=headers, **kwargs)
             okay = response.status_code == 200
             if not okay:
                 sleep(retry_after)
@@ -86,9 +78,7 @@ def download_gz_file(
     render=False,
 ):
     try:
-        scrape_api = (
-            f"https://api.scraperapi.com/?api_key={API_KEY_SCRAPY}&url={url}"
-        )
+        scrape_api = f"https://api.scraperapi.com/?api_key={API_KEY_SCRAPY}&url={url}"
 
         if ultra_premium:
             scrape_api = f"{scrape_api}&ultra_premium=true"
@@ -99,9 +89,7 @@ def download_gz_file(
 
         # response = requests.get(scrape_api)
         proxies, headers = get_proxies()
-        response = request_with_retry(
-            "get", scrape_api, proxies=proxies, headers=headers
-        )
+        response = request_with_retry("get", scrape_api, proxies=proxies, headers=headers)
         if competitor_name == "us.rs-online":
             file_name = f"sitemap-rs{str(count)}.xml.gz"
         else:
@@ -132,9 +120,7 @@ def get_sitemap_urls(url_to_parse, competitor):
         if page.status_code != 200:
             message = f"Error: {competitor} {page.text}"
             error_slack_message(message, "error")
-        sitemap_index = BeautifulSoup(
-            page.content, "xml"
-        )  # Use XML parser explicitly
+        sitemap_index = BeautifulSoup(page.content, "xml")  # Use XML parser explicitly
         found_urls = [element.text for element in sitemap_index.findAll("loc")]
 
         print(f"Total URLs: {len(found_urls)} for {url_to_parse}")
@@ -145,13 +131,9 @@ def get_sitemap_urls(url_to_parse, competitor):
         return []
 
 
-def get_page_with_scraperapi_from_url(
-    url, competitor, is_premium=False, is_ultra_premium=False, is_render=False
-):
+def get_page_with_scraperapi_from_url(url, competitor, is_premium=False, is_ultra_premium=False, is_render=False):
     try:
-        scrape_api = (
-            f"https://api.scraperapi.com/?api_key={API_KEY_SCRAPY}&url={url}"
-        )
+        scrape_api = f"https://api.scraperapi.com/?api_key={API_KEY_SCRAPY}&url={url}"
 
         if is_ultra_premium:
             scrape_api = f"{scrape_api}&ultra_premium=true"
@@ -164,9 +146,7 @@ def get_page_with_scraperapi_from_url(
         proxies, headers = get_proxies()
         page = None
         try:
-            page = request_with_retry(
-                "get", scrape_api, proxies=proxies, headers=headers
-            )
+            page = request_with_retry("get", scrape_api, proxies=proxies, headers=headers)
         except Exception as e:
             error_slack_message(e)
             return

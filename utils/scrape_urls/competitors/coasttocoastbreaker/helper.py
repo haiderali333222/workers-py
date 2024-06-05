@@ -1,8 +1,4 @@
-from utils.helpers.index import (
-    get_proxies,
-    request_with_retry,
-    url_insert_bulk,
-)
+from utils.helpers.index import get_proxies, request_with_retry, url_insert_bulk
 from utils.slack import detailed_error_slack_message
 
 COMPETITOR = "coasttocoastbreaker"
@@ -13,12 +9,8 @@ def store_cosotocost(url_formed):
     try:
         outputs = []
         proxies, headers = get_proxies()
-        headers[
-            "User-Agent"
-        ] = "Mozilla/5.0 (Linux; Android 6.0; HTC One M9 Build/MRA58K) AppleWebKit/537.36"
-        response = request_with_retry(
-            "get", url_formed, COMPETITOR, proxies=proxies, headers=headers
-        )
+        headers["User-Agent"] = "Mozilla/5.0 (Linux; Android 6.0; HTC One M9 Build/MRA58K) AppleWebKit/537.36"
+        response = request_with_retry("get", url_formed, COMPETITOR, proxies=proxies, headers=headers)
         if not response:
             return
         requ = response.json()

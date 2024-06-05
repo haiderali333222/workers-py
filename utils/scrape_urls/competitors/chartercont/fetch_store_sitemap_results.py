@@ -1,5 +1,5 @@
+from utils.helpers.index import get_sitemap_urls, url_insert_bulk
 from utils.slack import detailed_error_slack_message
-from utils.helpers.index import url_insert_bulk, get_sitemap_urls
 
 COMPETITOR = "chartercontact"
 URL = "http://www.chartercontact.com/sitemap.xml"

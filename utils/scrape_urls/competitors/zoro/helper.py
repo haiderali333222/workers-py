@@ -1,9 +1,6 @@
 from bs4 import BeautifulSoup
-from utils.helpers.index import (
-    read_gz_file,
-    url_insert_bulk,
-    check_manufacturer_match,
-)
+
+from utils.helpers.index import check_manufacturer_match, read_gz_file, url_insert_bulk
 from utils.slack import detailed_error_slack_message
 
 COMPETITOR = "zoro"
@@ -20,15 +17,11 @@ def store_data(url, manufacturers_dict):
             if data.startswith("<loc>") and data.endswith("</loc>"):
                 data = data.replace("<loc>", "")
                 if url_data := data.replace("</loc>", ""):
-                    if manufacturer := url_data.replace(
-                        "https://www.zoro.com/", ""
-                    ):
+                    if manufacturer := url_data.replace("https://www.zoro.com/", ""):
                         manufacturer_arr = manufacturer.split("-")
                         manufacturer = " ".join(manufacturer_arr[:4])
 
-                        if manufacturer and check_manufacturer_match(
-                            manufacturers_dict, manufacturer
-                        ):
+                        if manufacturer and check_manufacturer_match(manufacturers_dict, manufacturer):
                             result = {
                                 "competitor": "zoro",
                                 "url": url_data,
