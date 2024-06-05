@@ -14,7 +14,7 @@ from services.email.send_email import email_with_attachments
 
 from services.mongo_db.connection import mongoConnection
 from config.index import DB_NAME
-from utils.google_drive.upload_file_to_google_drive import upload_to_google_drive
+from utils.google_drive.upload_file import upload_to_google_drive
 
 
 db = mongoConnection()[DB_NAME]

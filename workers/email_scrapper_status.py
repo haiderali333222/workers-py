@@ -8,10 +8,9 @@ from utils.constants import scraper_status_email_body_template
 from datetime import datetime, timedelta
 from services.mongo_db.connection import mongoConnection
 from utils.cronjob_logs import insert_cron_job_start_status, update_cron_job_completed_status
-from scripts.competitor_url_fix import competitor_url_fix
-from scripts.remove_competitor_duplicate import remove_duplicate_for_all_competitor
+from utils.mongo.competitor_url_fix import competitor_url_fix
+from utils.mongo.remove_competitor_duplicate import remove_duplicate_for_all_competitor
 from scripts.send_scraped_data_summary import scraped_data_summary
-# from rungoogleshoppingurls import runGoogleShoppingURLs
 
 db = mongoConnection()[DB_NAME]
 
@@ -29,7 +28,7 @@ def run_tasks():
         # remove_duplicate_for_all_competitor()
         update_cron_job_completed_status(JOB_TITTLE, job_id)
     except Exception as e:
-        send_slack_message(f"Error while executing job: {e}")
+        send_slack_message(f"Error while executing job: {e}","error")
         update_cron_job_completed_status(JOB_TITTLE, job_id, status = 'Error')
     
 def send_scrapper_status():
@@ -67,5 +66,4 @@ def send_scrapper_status():
             email_subject += " -Staging"
         email(SCRAPER_STATUS, SEND_SCRAPERS_STATUS_EMAIL_RECIPIENT_TO, email_subject, SEND_SCRAPERS_STATUS_EMAIL_RECIPIENT_CC)
     except Exception as e:
-        send_slack_message(f"Error while executing job: {e}")
-send_scrapper_status()
+        send_slack_message(f"Error while executing job: {e}",'error')
