@@ -1,13 +1,13 @@
 import json
-
-from pydantic import BaseModel
 from typing import List, Optional
+
 from celery.result import AsyncResult
 from fastapi.responses import JSONResponse
+from pydantic import BaseModel
 
+from utils.scrape_urls.mapping.mapping_for_urls import COMPETITOR_MAPPING
 from utils.slack import send_slack_message
 from workers.scrape_competitor_urls import scrape_competitor_urls_task
-from jobs.mapping.mapping_for_urls import COMPETITOR_MAPPING
 
 
 class FetchUrlsRequest(BaseModel):
@@ -21,21 +21,11 @@ async def enqueue_competitors_url_fetch_request(request: FetchUrlsRequest):
     competitors = data.get("competitors", [])
 
     if not competitors:
-        return JSONResponse(
-            status_code=400, content={"message": "No competitors provided"}
-        )
+        return JSONResponse(status_code=400, content={"message": "No competitors provided"})
 
-    non_existent_competitors = [
-        competitor
-        for competitor in competitors
-        if competitor not in COMPETITOR_MAPPING
-    ]
+    non_existent_competitors = [competitor for competitor in competitors if competitor not in COMPETITOR_MAPPING]
 
-    competitors = [
-        competitor
-        for competitor in competitors
-        if competitor not in non_existent_competitors
-    ]
+    competitors = [competitor for competitor in competitors if competitor not in non_existent_competitors]
 
     task_ids = {}
     for competitor in competitors:

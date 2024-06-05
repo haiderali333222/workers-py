@@ -1,7 +1,8 @@
 from elasticsearch import Elasticsearch
+
 from config.index import (
-    ELASTIC_SEARCH_URL,
     ELASTIC_SEARCH_PASSWORD,
+    ELASTIC_SEARCH_URL,
     ELASTIC_SEARCH_USERNAME,
 )
 

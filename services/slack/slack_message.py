@@ -1,6 +1,8 @@
-import requests
-from config.index import SLACK_HEADER, IS_LOCAL
 import json
+
+import requests
+
+from config.index import IS_LOCAL, SLACK_HEADER
 
 
 def slack(slackMessageBody):

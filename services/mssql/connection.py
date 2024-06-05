@@ -1,6 +1,7 @@
 import pymssql
+
+from config.index import MSDB_NAME, PASSWORD, SERVER_NAME, USER_NAME
 from services.slack.slack_message import send_slack_message
-from config.index import SERVER_NAME, MSDB_NAME, USER_NAME, PASSWORD
 
 mssql_connection = None
 

@@ -1,4 +1,5 @@
 from dotenv import load_dotenv
+
 from .index import REDIS_URL
 
 load_dotenv()
@@ -10,11 +11,10 @@ broker_transport_options = {"visibility_timeout": 3600}  # 1 hour.
 result_backend_transport_options = {"retry_policy": {"timeout": 5.0}}
 broker_connection_retry_on_startup = True
 
-imports = ["workers.scrape_competitor_urls","workers.email_scrapper_status"]
+imports = ["workers.scrape_competitor_urls", "workers.email_scrapper_status"]
 task_routes = {
     "scrape_competitor_urls_task": {
         "queue": "celery_queue_for_scrape_competitor_urls",
     },
-      'email_scrapper_status_task':
-        {'queue': 'celery_queue_for_send_scrapper_status'}
+    "email_scrapper_status_task": {"queue": "celery_queue_for_send_scrapper_status"},
 }
