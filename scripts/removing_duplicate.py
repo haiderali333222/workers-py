@@ -2,14 +2,15 @@ import os
 import sys
 from datetime import datetime
 
+from config.index import DB_NAME
+from services.mongo_db.connection import mongoConnection
+
+# Import the necessary modules from the parent directory and its subdirectories
+from utils.slack import send_slack_message
+
 # facing import issues, We need to get parent directory
 parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(parent_dir)
-# Import the necessary modules from the parent directory and its subdirectories
-from utils.slack import send_slack_message
-from services.mongo_db.connection import mongoConnection
-from config.index import DB_NAME
-
 
 db = mongoConnection()[DB_NAME]
 

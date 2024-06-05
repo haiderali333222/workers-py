@@ -1,5 +1,6 @@
 from postmarker.core import PostmarkClient
-from config.index import MAIL_SENDER_SERVER_TOKEN, WEBDEVEMAIL, IS_LOCAL, IS_STAGING
+
+from config.index import IS_LOCAL, IS_STAGING, MAIL_SENDER_SERVER_TOKEN, WEBDEVEMAIL
 from services.slack.slack_message import send_detailed_slack_message
 
 

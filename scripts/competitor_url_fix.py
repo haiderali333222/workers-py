@@ -1,15 +1,13 @@
-import sys
 import os
-from dateutil.parser import parse
-from datetime import datetime
+import sys
+
+from config.index import DB_NAME
+from services.mongo_db.connection import mongoConnection
+from services.slack.slack_message import send_detailed_slack_message
 
 # facing import issues, We need to get parent directory
 parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(parent_dir)
-# Import the necessary modules from the parent directory and its subdirectories
-from services.slack.slack_message import send_detailed_slack_message
-from services.mongo_db.connection import mongoConnection
-from config.index import DB_NAME
 
 db = mongoConnection()[DB_NAME]
 CHUNK = 100000

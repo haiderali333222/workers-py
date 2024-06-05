@@ -1,18 +1,20 @@
 import traceback
 import uuid
+
 from services.mssql.connection import get_mssql_connection
 from utils.slack import send_slack_message
+
 
 def insert_cron_job_start_status(job_title):
     try:
         connection = get_mssql_connection()
         cursor = connection.cursor()
         cursor.execute("BEGIN TRANSACTION")
-        status = 'Active'
+        status = "Active"
         job_id = uuid.uuid4()
-        insert_cronjob_logs_query = f"""INSERT INTO cron_job_histories 
-        (id, job_title, status, start_time, created_at, updated_at) 
-        VALUES 
+        insert_cronjob_logs_query = f"""INSERT INTO cron_job_histories
+        (id, job_title, status, start_time, created_at, updated_at)
+        VALUES
         (
             '{job_id}',
             '{job_title}',
@@ -27,15 +29,16 @@ def insert_cron_job_start_status(job_title):
         connection.commit()
         return job_id
     except Exception as e:
-            message = "Error: " + str(e) + "\n" + traceback.format_exc()
-            send_slack_message(message)
+        message = "Error: " + str(e) + "\n" + traceback.format_exc()
+        send_slack_message(message)
 
-def update_cron_job_completed_status(job_title, job_id, status = 'Completed'):
+
+def update_cron_job_completed_status(job_title, job_id, status="Completed"):
     try:
         connection = get_mssql_connection()
         cursor = connection.cursor()
         cursor.execute("BEGIN TRANSACTION")
-        update_cronjob_logs_query = f"""UPDATE cron_job_histories SET 
+        update_cronjob_logs_query = f"""UPDATE cron_job_histories SET
             job_title = '{job_title}',
             status = '{status}',
             end_time = CURRENT_TIMESTAMP,
