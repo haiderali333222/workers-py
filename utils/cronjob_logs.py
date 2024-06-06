@@ -30,7 +30,7 @@ def insert_cron_job_start_status(job_title):
         return job_id
     except Exception as e:
         message = "Error: " + str(e) + "\n" + traceback.format_exc()
-        send_slack_message(message)
+        send_slack_message(message, "error")
 
 
 def update_cron_job_completed_status(job_title, job_id, status="Completed"):
@@ -50,14 +50,18 @@ def update_cron_job_completed_status(job_title, job_id, status="Completed"):
         connection.commit()
     except Exception as e:
         message = "Error: " + str(e) + "\n" + traceback.format_exc()
-        send_slack_message(message)
+        send_slack_message(message, "error")
 
 
 def competitors_only_for_algo_query():
-    connection = get_mssql_connection()
-    cursor = connection.cursor()
-    query = f"""SELECT name from competitors WHERE consider_for_pricing_algo = 1 AND status != 'red' or status IS NULL"""  # noqa: F541
-    cursor.execute(query)
-    competitors_only_for_algo = cursor.fetchall()
-    competitors_only_for_algo = [item[0] for item in competitors_only_for_algo]
-    return competitors_only_for_algo
+    try:
+        connection = get_mssql_connection()
+        cursor = connection.cursor()
+        query = f"""SELECT name from competitors WHERE consider_for_pricing_algo = 1 AND status != 'red' or status IS NULL"""  # noqa: F541
+        cursor.execute(query)
+        competitors_only_for_algo = cursor.fetchall()
+        competitors_only_for_algo = [item[0] for item in competitors_only_for_algo]
+        return competitors_only_for_algo
+    except Exception as e:
+        message = "Error: " + str(e) + "\n" + traceback.format_exc()
+        send_slack_message(message, "error")

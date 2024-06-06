@@ -1,14 +1,13 @@
 import os
 import sys
-from datetime import datetime
+
+from config.index import DB_NAME
+from services.mongo_db.connection import mongoConnection
+from utils.slack import send_slack_message
 
 # facing import issues, We need to get parent directory
 parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(parent_dir)
-from utils.slack import send_slack_message
-from services.mongo_db.connection import mongoConnection
-from config.index import DB_NAME
-
 
 db = mongoConnection()[DB_NAME]
 
@@ -47,14 +46,3 @@ def remove_duplicate_for_all_competitor():
             remove_duplicate(competitor)
     except Exception as e:
         send_slack_message(f"remove_duplicate_for_all_competitor: {e}", "error")
-
-
-# now = datetime.now()
-# start_time = now.strftime("%H:%M:%S")
-# send_detailed_slack_message("duplicate-remove","Info:  script ended at"+start_time)
-
-# # # remove_duplicate_for_all_competitor()
-
-# now = datetime.now()
-# end_time = now.strftime("%H:%M:%S")
-# send_detailed_slack_message("duplicate-remove","Info:  script ended at "+end_time)

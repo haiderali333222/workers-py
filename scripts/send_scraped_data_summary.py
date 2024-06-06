@@ -6,24 +6,18 @@ from datetime import datetime, timedelta
 import pydash
 
 from config.index import DB_NAME
-from services.email.send_email import email_with_attachments
-from services.mongo_db.connection import mongoConnection
 
 # Import the necessary modules from the parent directory and its subdirectories
-from services.slack.slack_message import send_detailed_slack_message
+from services.email.send_email import email_with_attachments
+from services.mongo_db.connection import mongoConnection
 from utils.google_drive.upload_file import upload_to_google_drive
+
+# Import the necessary modules from the parent directory and its subdirectories
+from utils.slack import send_detailed_slack_message
 
 # facing import issues, We need to get parent directory
 parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(parent_dir)
-# Import the necessary modules from the parent directory and its subdirectories
-from services.slack.slack_message import send_detailed_slack_message
-from services.email.send_email import email_with_attachments
-
-from services.mongo_db.connection import mongoConnection
-from config.index import DB_NAME
-from utils.google_drive.upload_file import upload_to_google_drive
-
 
 db = mongoConnection()[DB_NAME]
 JOB = "Scraped-Data-Summary"
@@ -133,4 +127,4 @@ def scraped_data_summary():
                 uploaded_files.append(link)
         email_with_attachments(SUBJECT, RECEIVER, JOB, uploaded_files, CC)
     except Exception as e:
-        send_detailed_slack_message("competitor-url-files-error", str(e))
+        send_detailed_slack_message("competitor-url-files-error", str(e), "danger")

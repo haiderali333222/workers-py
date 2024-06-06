@@ -9,10 +9,6 @@ from scripts.send_scraped_data_summary import scraped_data_summary
 from services.celery.celery_app import celery_app
 from services.email.send_email import email
 from services.mongo_db.connection import mongoConnection
-from utils.cronjob_logs import insert_cron_job_start_status, update_cron_job_completed_status
-from utils.mongo.competitor_url_fix import competitor_url_fix
-from utils.mongo.remove_competitor_duplicate import remove_duplicate_for_all_competitor
-from scripts.send_scraped_data_summary import scraped_data_summary
 from utils.constants import (
     SEND_SCRAPERS_STATUS_EMAIL_RECIPIENT_CC,
     SEND_SCRAPERS_STATUS_EMAIL_RECIPIENT_TO,
@@ -42,7 +38,7 @@ def run_tasks():
         # remove_duplicate_for_all_competitor()
         update_cron_job_completed_status(JOB_TITTLE, job_id)
     except Exception as e:
-        send_slack_message(f"Error while executing job: {e}")
+        send_slack_message(f"Error while executing job: {e}", "error")
         update_cron_job_completed_status(JOB_TITTLE, job_id, status="Error")
 
 
@@ -77,4 +73,4 @@ def send_scrapper_status():
             email_subject += " -Staging"
         email(SCRAPER_STATUS, SEND_SCRAPERS_STATUS_EMAIL_RECIPIENT_TO, email_subject, SEND_SCRAPERS_STATUS_EMAIL_RECIPIENT_CC)
     except Exception as e:
-        send_slack_message(f"Error while executing job: {e}",'error')
+        send_slack_message(f"Error while executing job: {e}", "error")

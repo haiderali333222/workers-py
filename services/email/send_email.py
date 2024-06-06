@@ -1,7 +1,7 @@
 from postmarker.core import PostmarkClient
 
 from config.index import IS_LOCAL, IS_STAGING, MAIL_SENDER_SERVER_TOKEN, WEBDEVEMAIL
-from services.slack.slack_message import send_detailed_slack_message
+from utils.slack import send_detailed_slack_message
 
 
 def email(mesage, to_name, subject, cc_name=[]):
@@ -17,7 +17,7 @@ def email_with_attachments(message, to_name, subject, attachments=None, cc_name=
             return
         email_subject = subject
         if IS_STAGING:
-            email_subject = subject + "-staging"
+            email_subject = f"{subject}-staging"
 
         if attachments:
             attachment_links = "\n".join(f' \n <a href="{attachment}">{attachment}</a>' for attachment in attachments)
@@ -32,4 +32,4 @@ def email_with_attachments(message, to_name, subject, attachments=None, cc_name=
             HtmlBody=message,
         )
     except Exception as e:
-        send_detailed_slack_message("email-attachments-error", str(e))
+        send_detailed_slack_message("email-attachments-error", str(e), "danger")

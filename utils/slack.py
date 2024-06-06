@@ -60,3 +60,18 @@ def detailed_error_slack_message(e, competitor_name=None, message=None):
         ]
     }
     slack(slackMessageBody)
+
+
+def send_detailed_slack_message(title, message, color="#439FE0"):
+    full_message = f"{title}\n{message}"  # Bold title with newline
+
+    payload = {
+        "attachments": [
+            {
+                "title": full_message,
+                "color": color,
+            }
+        ]
+    }
+
+    return slack(payload)

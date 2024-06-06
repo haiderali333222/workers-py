@@ -3,15 +3,13 @@ import sys
 
 from config.index import DB_NAME
 from services.mongo_db.connection import mongoConnection
-from services.slack.slack_message import send_detailed_slack_message
+
+# Import the necessary modules from the parent directory and its subdirectories
+from utils.slack import send_slack_message
 
 # facing import issues, We need to get parent directory
 parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(parent_dir)
-# Import the necessary modules from the parent directory and its subdirectories
-from utils.slack import send_slack_message
-from services.mongo_db.connection import mongoConnection
-from config.index import DB_NAME
 
 db = mongoConnection()[DB_NAME]
 CHUNK = 100000
@@ -51,14 +49,3 @@ def competitor_url_fix():
             skip += CHUNK
     except Exception as e:
         send_slack_message(f"competitor-url-fix: {e}", "error")
-
-
-# now = datetime.now()
-# start_time = now.strftime("%H:%M:%S")
-# send_detailed_slack_message("competitor-url-fix","Info:  script started at "+start_time)
-
-# competitor_url_fix()
-
-# now = datetime.now()
-# end_time = now.strftime("%H:%M:%S")
-# send_detailed_slack_message("competitor-url-fix","Info:  script ended at "+end_time)

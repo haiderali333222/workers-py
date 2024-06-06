@@ -7,8 +7,7 @@ from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
 
 from config.index import GOOGLE_DRIVE_CREDENTIALS_FILE
-from services.slack.slack_message import send_detailed_slack_message
-from utils.slack import send_slack_message
+from utils.slack import send_detailed_slack_message, send_slack_message
 
 SCOPES = ["https://www.googleapis.com/auth/drive"]
 
@@ -44,5 +43,5 @@ def upload_to_google_drive(file_path, max_trys=10, init=0):
             send_detailed_slack_message("error occured in file uploading", "Max tries done")
             return
     except Exception as e:
-        send_detailed_slack_message("EXCEPTION IN FILE UPLOADING: ", e)
+        send_detailed_slack_message("EXCEPTION IN FILE UPLOADING: ", e, "danger")
         return upload_to_google_drive(file_path, max_trys, init=init + 1)
