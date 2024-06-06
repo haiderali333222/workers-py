@@ -54,15 +54,19 @@ Below is a list of the main dependencies and their versions required to run this
    Create a `.env` file in the root directory by copying the contents of the `.env.example` file and updating the values as needed.
 
    ```sh
-    ENVIRONMENT=local
-    DB_URL=mongodb://127.0.0.1:27017/
-    DB_NAME=pricing
-    ELASTIC_SEARCH_URL=
-    ELASTIC_SEARCH_USERNAME=
-    ELASTIC_SEARCH_PASSWORD=
-    API_KEY_SCRAPY=
-    PROXY_CSV_URL=
-    SLACK_HEADER=
+      ENVIRONMENT=local
+      DB_URL=mongodb://127.0.0.1:27017/
+      DB_NAME=pricing
+      ELASTIC_SEARCH_URL=
+      ELASTIC_SEARCH_USERNAME=
+      ELASTIC_SEARCH_PASSWORD=
+      API_KEY_SCRAPY=
+      PROXY_CSV_URL=
+      SLACK_HEADER=
+      SERVER_NAME=
+      MSDB_NAME=
+      USER_NAME=
+      PASSWORD=
    ```
 
 6. **Run the Application**
