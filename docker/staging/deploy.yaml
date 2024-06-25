@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: amplify-scrapers-urls
+  namespace: staging
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: amplify-scrapers-urls
+  template:
+    metadata:
+      labels:
+        name: amplify-scrapers-urls
+    spec:
+      containers:
+      - image: electricalregistry.azurecr.io/amplify-scrapers-urls-staging
+        imagePullPolicy: Always
+        name: amplify-scrapers-urls
+        envFrom:
+        - secretRef:
+            name: "config-amplify-scrapers-urls"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    service.beta.kubernetes.io/azure-dns-label-name: amplify-scrapers-urls-staging
+  name: amplify-scrapers-urls
+  namespace: staging
+  labels:
+    name: amplify-scrapers-urls
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 8888
+    targetPort: 8888
+  selector:
+    name: amplify-scrapers-urls
+---
