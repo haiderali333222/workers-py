@@ -53,6 +53,7 @@ jobs:
             id-token: write
         runs-on: ubuntu-latest
         needs:
+            - lintcode
             - buildImage
         steps:
             - uses: actions/checkout@v3
