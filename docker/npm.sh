@@ -631,7 +631,7 @@ function docker_status_stack()
 function docker_logs()
 {
 	display_step "${FUNCNAME[0]}";
-	
+
 	if [[ $1 == "master" ]]; then
 		SERVER_NAME="widespread1@$1.widespread.com"
 	else
