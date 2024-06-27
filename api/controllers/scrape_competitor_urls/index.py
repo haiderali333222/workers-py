@@ -1,4 +1,3 @@
-import requests
 import json
 from typing import List, Optional
 
@@ -19,9 +18,6 @@ async def enqueue_competitors_url_fetch_request(request: FetchUrlsRequest):
     try:
         data_json = request.model_dump_json()
         data = json.loads(data_json)
-        response = requests.get('https://api.ipify.org/')
-        public_ip = response.text
-        send_slack_message(public_ip)
 
         competitors = data.get("competitors", [])
 
