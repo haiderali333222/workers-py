@@ -2,13 +2,14 @@ from celery import Celery
 
 # from config import celery
 from config.index import REDIS_HOST, REDIS_PASSWORD
+from utils.slack import  send_slack_message
 
 # Create Celery application
 celery_app = Celery(__name__)
 
 # celery_app.config_from_object(celery)
-celery_app.conf.broker_url = f"rediss://:{REDIS_PASSWORD}@{REDIS_HOST}:6380/0"
-celery_app.conf.backend_url = f"rediss://:{REDIS_PASSWORD}@{REDIS_HOST}:6380/0"
+celery_app.conf.broker_url = f"redis://:{REDIS_PASSWORD}@{REDIS_HOST}:6380/0"
+celery_app.conf.backend_url = f"redis://:{REDIS_PASSWORD}@{REDIS_HOST}:6380/0"
 
 celery_app.conf.broker_transport_options = {"visibility_timeout": 3600}  # 1 hour.
 celery_app.conf.result_backend_transport_options = {"retry_policy": {"timeout": 5.0}}
@@ -20,3 +21,5 @@ celery_app.conf.task_routes = {
     },
     "email_scrapper_status_task": {"queue": "celery_queue_for_send_scrapper_status"},
 }
+
+send_slack_message(celery_app.conf.broker_url)
