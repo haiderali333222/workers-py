@@ -16,7 +16,7 @@ def log_public_ip():
         response = requests.get('https://api.ipify.org/')
         if response.status_code == 200:
             public_ip = response.text.strip()
-            print(f"My public IP address is: {public_ip}")
+            send_slack_message(f"My public IP address is: {public_ip}")
             # Optionally, you can log the IP address to a file or database here
         else:
             print(f"Failed to fetch public IP. Status code: {response.status_code}")
