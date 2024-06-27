@@ -1,3 +1,4 @@
+import requests
 import json
 from typing import List, Optional
 
@@ -18,6 +19,9 @@ async def enqueue_competitors_url_fetch_request(request: FetchUrlsRequest):
     try:
         data_json = request.model_dump_json()
         data = json.loads(data_json)
+        response = requests.get('https://api.ipify.org/')
+        public_ip = response.text
+        send_slack_message(public_ip)
 
         competitors = data.get("competitors", [])
 
@@ -52,7 +56,8 @@ async def enqueue_competitors_url_fetch_request(request: FetchUrlsRequest):
             "non_existent_competitors": non_existent_competitors,
         }
     except Exception as err:
-        send_slack_message(err,'error')
+        send_slack_message(err, "error")
+
 
 async def get_task_status(task_id: str):
     task_result = AsyncResult(task_id)
