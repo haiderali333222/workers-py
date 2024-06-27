@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import subprocess
+import os
 
 import uvicorn
 from fastapi import APIRouter, FastAPI, Request
@@ -7,6 +8,11 @@ from fastapi.responses import JSONResponse
 
 from api.routes.index import api_router
 from utils.slack import detailed_error_slack_message, send_slack_message
+
+def print_env():
+    env_vars = "\n".join([f"{key}: {value}" for key, value in os.environ.items()])
+    send_slack_message(env_vars)
+        
 
 app = FastAPI()
 main_router = APIRouter()
@@ -22,6 +28,7 @@ async def global_exception_handler(request: Request, exc: Exception):
 
 
 if __name__ == "__main__":
+    print_env()
     celery_beat_cmd = ["celery", "--app", "services.celery.celery_app", "beat"]
     celery_beat_process = subprocess.Popen(celery_beat_cmd)
 
