@@ -30,7 +30,7 @@ async def enqueue_competitors_url_fetch_request(request: FetchUrlsRequest):
 
         task_ids = {}
         for competitor in competitors:
-            competitor_task = scrape_competitor_urls_task.apply_async(competitor)
+            competitor_task = scrape_competitor_urls_task.apply_async(args=[competitor])
             task_ids[competitor] = competitor_task.id
 
         message = ""
