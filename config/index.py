@@ -25,7 +25,6 @@ REDIS_HOST = os.getenv("REDIS_HOST")
 REDIS_PORT = 6380
 REDIS_DB = 0
 REDIS_URL = "redis://localhost:6379/0" if IS_LOCAL else f"rediss://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}"
-
 GOOGLE_DRIVE_CREDENTIALS_FILE = "config/google_drive_credentials.json"
 
 WEBDEVEMAIL = "webdev@electrical.com"

@@ -15,42 +15,44 @@ class FetchUrlsRequest(BaseModel):
 
 
 async def enqueue_competitors_url_fetch_request(request: FetchUrlsRequest):
-    data_json = request.model_dump_json()
-    data = json.loads(data_json)
+    try:
+        data_json = request.model_dump_json()
+        data = json.loads(data_json)
 
-    competitors = data.get("competitors", [])
+        competitors = data.get("competitors", [])
 
-    if not competitors:
-        return JSONResponse(status_code=400, content={"message": "No competitors provided"})
+        if not competitors:
+            return JSONResponse(status_code=400, content={"message": "No competitors provided"})
 
-    non_existent_competitors = [competitor for competitor in competitors if competitor not in COMPETITOR_MAPPING]
+        non_existent_competitors = [competitor for competitor in competitors if competitor not in COMPETITOR_MAPPING]
 
-    competitors = [competitor for competitor in competitors if competitor not in non_existent_competitors]
+        competitors = [competitor for competitor in competitors if competitor not in non_existent_competitors]
 
-    task_ids = {}
-    for competitor in competitors:
-        competitor_task = scrape_competitor_urls_task.delay(competitor)
-        task_ids[competitor] = competitor_task.id
+        task_ids = {}
+        for competitor in competitors:
+            competitor_task = scrape_competitor_urls_task.delay(competitor)
+            task_ids[competitor] = competitor_task.id
 
-    message = ""
+        message = ""
 
-    if task_ids and not non_existent_competitors:
-        message = f"URL Fetch tasks for {competitors} have been enqueued"
+        if task_ids and not non_existent_competitors:
+            message = f"URL Fetch tasks for {competitors} have been enqueued"
 
-    if not task_ids and non_existent_competitors:
-        message = "No valid competitors were provided"
+        if not task_ids and non_existent_competitors:
+            message = "No valid competitors were provided"
 
-    if task_ids and non_existent_competitors:
-        message = f"URL Fetch tasks for {competitors} have been enqueued, but the following competitors are invalid: {non_existent_competitors}"
+        if task_ids and non_existent_competitors:
+            message = f"URL Fetch tasks for {competitors} have been enqueued, but the following competitors are invalid: {non_existent_competitors}"
 
-    send_slack_message(message)
+        send_slack_message(message)
 
-    return {
-        "task_ids": task_ids,
-        "message": message,
-        "non_existent_competitors": non_existent_competitors,
-    }
-
+        return {
+            "task_ids": task_ids,
+            "message": message,
+            "non_existent_competitors": non_existent_competitors,
+        }
+    except Exception as err:
+        send_slack_message(err,'error')
 
 async def get_task_status(task_id: str):
     task_result = AsyncResult(task_id)
