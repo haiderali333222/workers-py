@@ -52,7 +52,8 @@ async def enqueue_competitors_url_fetch_request(request: FetchUrlsRequest):
             "non_existent_competitors": non_existent_competitors,
         }
     except Exception as err:
-        send_slack_message(err,'error')
+        send_slack_message(err, "error")
+
 
 async def get_task_status(task_id: str):
     task_result = AsyncResult(task_id)
