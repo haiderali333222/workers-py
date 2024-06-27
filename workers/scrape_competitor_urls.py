@@ -15,7 +15,13 @@ celery = Celery(__name__)
 celery.conf.broker_url = f"rediss://:{REDIS_PASSWORD}@{REDIS_HOST}:6380/0"
 celery.conf.backend_url = f"rediss://:{REDIS_PASSWORD}@{REDIS_HOST}:6380/0"
 
-celery.conf.broker_transport_options = {"visibility_timeout": 3600}  # 1 hour.
+
+celery.conf.broker_transport_options = {"visibility_timeout": 3600,   'ssl': {
+            'servername': REDIS_HOST,
+            'connectTimeout': 10000,
+        }}  # 1 hour.
+
+celery.conf.broker_retry_strategy=lambda options: max(options.get('prev_attempt', 0) * 100, 3000),
 celery.conf.result_backend_transport_options = {"retry_policy": {"timeout": 5.0}}
 celery.conf.broker_connection_retry_on_startup = True
 celery.conf.imports = ["workers.scrape_competitor_urls", "workers.email_scrapper_status"]
