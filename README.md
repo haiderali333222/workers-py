@@ -2,7 +2,8 @@
 
 ## Project Overview
 
-This project is a FastAPI-based web service designed to scrape competitor URLs. It utilizes Celery for task management and Redis as the message broker. The API enqueues URL fetch tasks for specified competitors and monitors the status of these tasks. Additionally, the system integrates with Slack for notification purposes.
+This project is a FastAPI-based web service designed to scrape competitor URLs. It utilizes Celery for task management and Redis as the message broker.
+The API enqueues URL fetch tasks for specified competitors and monitors the status of these tasks. Additionally, the system integrates with Slack for notification purposes.
 
 ## Requirements
 
