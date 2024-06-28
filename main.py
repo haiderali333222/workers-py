@@ -33,7 +33,7 @@ if __name__ == "__main__":
         "--app",
         "services.celery.celery_app",
         "worker",
-        "--concurrency=2",
+        "--concurrency=3",
         "-Q",
         "celery_queue_for_scrape_competitor_urls,celery_queue_for_send_scrapper_status",
         "--pool=solo",
