@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import os
-import requests
 import subprocess
 
 import uvicorn
@@ -10,25 +9,6 @@ from fastapi.responses import JSONResponse
 from api.routes.index import api_router
 from utils.slack import detailed_error_slack_message, send_slack_message
 
-def log_public_ip():
-    try:
-        # Make a GET request to api.ipify.org to fetch your public IP
-        response = requests.get('https://api.ipify.org/')
-        if response.status_code == 200:
-            public_ip = response.text.strip()
-            send_slack_message(f"My public IP address is: {public_ip}")
-            # Optionally, you can log the IP address to a file or database here
-        else:
-            print(f"Failed to fetch public IP. Status code: {response.status_code}")
-    except requests.RequestException as e:
-        print(f"Error fetching public IP: {e}")
-
-# Call the function to log your public IP
-log_public_ip()
-
-def print_env():
-    env_vars = "\n".join([f"{key}: {value}" for key, value in os.environ.items()])
-    send_slack_message(env_vars)
 
 
 app = FastAPI()
@@ -45,7 +25,6 @@ async def global_exception_handler(request: Request, exc: Exception):
 
 
 if __name__ == "__main__":
-    print_env()
     celery_beat_cmd = ["celery", "--app", "services.celery.celery_app", "beat"]
     celery_beat_process = subprocess.Popen(celery_beat_cmd)
 
