@@ -9,8 +9,6 @@ from fastapi.responses import JSONResponse
 from api.routes.index import api_router
 from utils.slack import detailed_error_slack_message, send_slack_message
 
-
-
 app = FastAPI()
 main_router = APIRouter()
 

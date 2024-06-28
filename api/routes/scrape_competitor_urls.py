@@ -1,5 +1,3 @@
-import requests
-
 from typing import List, Optional
 
 from fastapi import APIRouter, FastAPI
