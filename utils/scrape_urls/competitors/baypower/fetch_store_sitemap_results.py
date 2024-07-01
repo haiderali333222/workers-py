@@ -9,7 +9,7 @@ URL = "https://www.baypower.com/pub/media/sitemap.xml"
 def get_and_store_baypower_urls():
     try:
         outputs = []
-        scrape_api = f'https://api.scraperapi.com/?api_key={API_KEY_SCRAPY}&url={URL}&country_code=us&ultra_premium=true'
+        scrape_api = f"https://api.scraperapi.com/?api_key={API_KEY_SCRAPY}&url={URL}&country_code=us&ultra_premium=true"
         sitemap_urls = get_sitemap_urls(scrape_api, COMPETITOR)
         print(f"Total URLs: {len(sitemap_urls)}")
         for data in sitemap_urls:
