@@ -1,3 +1,4 @@
+from config.index import API_KEY_SCRAPY
 from utils.helpers.index import get_sitemap_urls, url_insert_bulk
 from utils.slack import detailed_error_slack_message
 
@@ -8,7 +9,8 @@ URL = "https://www.baypower.com/pub/media/sitemap.xml"
 def get_and_store_baypower_urls():
     try:
         outputs = []
-        sitemap_urls = get_sitemap_urls(URL, COMPETITOR)
+        scrape_api = f'https://api.scraperapi.com/?api_key={API_KEY_SCRAPY}&url={URL}&country_code=us&ultra_premium=true'
+        sitemap_urls = get_sitemap_urls(scrape_api, COMPETITOR)
         print(f"Total URLs: {len(sitemap_urls)}")
         for data in sitemap_urls:
             result = {
