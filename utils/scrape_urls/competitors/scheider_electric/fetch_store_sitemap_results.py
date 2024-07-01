@@ -1,3 +1,4 @@
+from config.index import API_KEY_SCRAPY
 from utils.helpers.index import get_sitemap_urls, url_insert_bulk
 from utils.slack import detailed_error_slack_message
 
@@ -6,12 +7,16 @@ URL = "https://www.se.com/us/en/product/google-product-sitemapindex-US-en.xml"
 MAX_COUNT = 5000
 
 
+def get_scraperapi_url(url):
+    return f"https://api.scraperapi.com/?api_key={API_KEY_SCRAPY}&url={url}"
+
+
 def get_and_store_scheiderElectric_urls():
     try:
         outputs = []
-        sitemap_url = get_sitemap_urls(URL, COMPETITOR)
+        sitemap_url = get_sitemap_urls(get_scraperapi_url(URL), COMPETITOR)
         for data in sitemap_url:
-            sitemap_url_data = get_sitemap_urls(data, COMPETITOR)
+            sitemap_url_data = get_sitemap_urls(get_scraperapi_url(data), COMPETITOR)
             for i in sitemap_url_data:
                 result = {
                     "competitor": COMPETITOR,
